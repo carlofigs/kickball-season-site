@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schedule.schema.json",
+  "title": "Kickball season schedule",
+  "description": "Games, match blocks, and field duties for a kickball season.",
+  "type": "object",
+  "required": ["games"],
+  "additionalProperties": false,
+  "properties": {
+    "games": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/game" }
+    }
+  },
+  "definitions": {
+    "pitchField": {
+      "type": "string",
+      "enum": ["Kiosk", "Road", "Middle", "Water"],
+      "description": "Pitch/field name — only these four fields are used in the schedule."
+    },
+    "game": {
+      "type": "object",
+      "required": [
+        "gameNumber",
+        "date",
+        "title",
+        "theme",
+        "themeDescription",
+        "fieldSetupTime",
+        "fieldPackDownTime",
+        "fieldSetupTeams",
+        "fieldPackDownTeams",
+        "matches",
+        "postPlaySocial"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "gameNumber": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Sequential game id within the season."
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Local calendar date (YYYY-MM-DD)."
+        },
+        "title": { "type": "string" },
+        "theme": { "type": "string" },
+        "themeDescription": { "type": "string" },
+        "fieldSetupTime": {
+          "description": "Display time for field setup, or null if none.",
+          "type": ["string", "null"]
+        },
+        "fieldPackDownTime": {
+          "description": "Display time for field pack down, or null if none.",
+          "type": ["string", "null"]
+        },
+        "fieldSetupTeams": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "fieldPackDownTeams": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "matches": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/matchBlock" }
+        },
+        "postPlaySocial": {
+          "type": "string",
+          "description": "Venue or label for post-play social."
+        }
+      }
+    },
+    "matchBlock": {
+      "type": "object",
+      "required": ["time", "fixtures"],
+      "additionalProperties": false,
+      "properties": {
+        "time": {
+          "type": "string",
+          "description": "Display time for this block (e.g. 3:00 PM)."
+        },
+        "fixtures": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/fixture" }
+        }
+      }
+    },
+    "fixture": {
+      "description": "Either a normal matchup (home/away team names) or an N/A slot.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["field", "home", "away"],
+          "additionalProperties": false,
+          "properties": {
+            "field": { "$ref": "#/definitions/pitchField" },
+            "home": { "type": "string" },
+            "away": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["field", "home", "away", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "field": { "$ref": "#/definitions/pitchField" },
+            "home": { "type": "null" },
+            "away": { "type": "null" },
+            "note": {
+              "type": "string",
+              "const": "N/A",
+              "description": "Placeholder row with no matchup."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

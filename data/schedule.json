@@ -1,0 +1,229 @@
+{
+  "$schema": "./schedule.schema.json",
+  "games": [
+    {
+      "gameNumber": 1,
+      "date": "2026-03-15",
+      "title": "Game 1",
+      "theme": "Team Colour Pride",
+      "themeDescription": "Represent your team whether in a coloured tutu, headdress, or your favourite cap",
+      "fieldSetupTime": "2:00 PM",
+      "fieldPackDownTime": "5:00 PM",
+      "fieldSetupTeams": ["Black", "Purple", "Apple", "Orange", "Red"],
+      "fieldPackDownTeams": ["Hay", "Chocolate", "Teal"],
+      "matches": [
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Black", "away": "Blue" },
+            { "field": "Road", "home": "Purple", "away": "Apple" },
+            { "field": "Middle", "home": "Orange", "away": "Yellow" },
+            { "field": "Water", "home": "Red", "away": "Green" }
+          ]
+        },
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Pink", "away": "Hay" },
+            { "field": "Road", "home": null, "away": null, "note": "N/A" },
+            { "field": "Middle", "home": "Lilac", "away": "Chocolate" },
+            { "field": "Water", "home": "Baby Blue", "away": "Teal" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 2,
+      "date": "2026-03-22",
+      "title": "Game 2",
+      "theme": "Flip It Around… Wicked Wigs!",
+      "themeDescription": "Get ready for a wicked good time—think emerald glam, gravity-defying curls, and hair that's totally spell-binding. The bolder the wig, the better!",
+      "fieldSetupTime": "2:30 PM",
+      "fieldPackDownTime": "5:00 PM",
+      "fieldSetupTeams": ["Apple", "Hay", "Green", "Teal", "Baby Blue"],
+      "fieldPackDownTeams": ["Yellow", "Orange", "Black"],
+      "matches": [
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Apple", "away": "Chocolate" },
+            { "field": "Road", "home": "Hay", "away": "Lilac" },
+            { "field": "Middle", "home": "Green", "away": "Teal" },
+            { "field": "Water", "home": "Baby Blue", "away": "Pink" }
+          ]
+        },
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Purple", "away": "Yellow" },
+            { "field": "Road", "home": "Blue", "away": "Orange" },
+            { "field": "Middle", "home": null, "away": null, "note": "N/A" },
+            { "field": "Water", "home": "Red", "away": "Black" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 3,
+      "date": "2026-03-29",
+      "title": "Game 3 (same day as Game 4)",
+      "theme": "Tu tu much",
+      "themeDescription": "Wear your team colour tutus!",
+      "fieldSetupTime": "1:30 PM",
+      "fieldPackDownTime": null,
+      "fieldSetupTeams": ["Black", "Orange", "Yellow", "Red"],
+      "fieldPackDownTeams": [],
+      "matches": [
+        {
+          "time": "2:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Black", "away": "Green" },
+            { "field": "Road", "home": "Orange", "away": "Lilac" },
+            { "field": "Middle", "home": "Yellow", "away": "Blue" },
+            { "field": "Water", "home": "Red", "away": "Purple" }
+          ]
+        },
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Pink", "away": "Teal" },
+            { "field": "Road", "home": null, "away": null, "note": "N/A" },
+            { "field": "Middle", "home": "Chocolate", "away": "Hay" },
+            { "field": "Water", "home": "Apple", "away": "Baby Blue" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 4,
+      "date": "2026-03-29",
+      "title": "Game 4 (same day as Game 3)",
+      "theme": "Tu tu much",
+      "themeDescription": "Wear your team colour tutus!",
+      "fieldSetupTime": null,
+      "fieldPackDownTime": "6:00 PM",
+      "fieldSetupTeams": [],
+      "fieldPackDownTeams": ["Baby Blue", "Yellow", "Apple", "Hay"],
+      "matches": [
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Orange", "away": "Red" },
+            { "field": "Road", "home": null, "away": null, "note": "N/A" },
+            { "field": "Middle", "home": "Black", "away": "Purple" },
+            { "field": "Water", "home": "Green", "away": "Blue" }
+          ]
+        },
+        {
+          "time": "5:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Lilac", "away": "Baby Blue" },
+            { "field": "Road", "home": "Chocolate", "away": "Yellow" },
+            { "field": "Middle", "home": "Pink", "away": "Apple" },
+            { "field": "Water", "home": "Teal", "away": "Hay" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 5,
+      "date": "2026-04-12",
+      "title": "Game 5",
+      "theme": "Easter Hat Parade",
+      "themeDescription": "Parade around the field showcasing your most fabulous Easter Hat!",
+      "fieldSetupTime": "2:30 PM",
+      "fieldPackDownTime": "5:00 PM",
+      "fieldSetupTeams": ["Green", "Yellow", "Baby Blue", "Red", "Blue"],
+      "fieldPackDownTeams": ["Apple", "Pink", "Lilac"],
+      "matches": [
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Green", "away": "Orange" },
+            { "field": "Road", "home": "Yellow", "away": "Black" },
+            { "field": "Middle", "home": "Baby Blue", "away": "Red" },
+            { "field": "Water", "home": "Blue", "away": "Purple" }
+          ]
+        },
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Hay", "away": "Apple" },
+            { "field": "Road", "home": "Chocolate", "away": "Pink" },
+            { "field": "Middle", "home": null, "away": null, "note": "N/A" },
+            { "field": "Water", "home": "Teal", "away": "Lilac" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 6,
+      "date": "2026-04-19",
+      "title": "Game 6",
+      "theme": "Yellow Brick Rodeo",
+      "themeDescription": "Horses, Cow Folks",
+      "fieldSetupTime": "2:30 PM",
+      "fieldPackDownTime": "5:00 PM",
+      "fieldSetupTeams": ["Baby Blue", "Blue", "Hay", "Lilac", "Apple"],
+      "fieldPackDownTeams": ["Red", "Black", "Green"],
+      "matches": [
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Baby Blue", "away": "Chocolate" },
+            { "field": "Road", "home": "Blue", "away": "Hay" },
+            { "field": "Middle", "home": "Lilac", "away": "Pink" },
+            { "field": "Water", "home": "Apple", "away": "Teal" }
+          ]
+        },
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Yellow", "away": "Red" },
+            { "field": "Road", "home": null, "away": null, "note": "N/A" },
+            { "field": "Middle", "home": "Orange", "away": "Black" },
+            { "field": "Water", "home": "Purple", "away": "Green" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    },
+    {
+      "gameNumber": 7,
+      "date": "2026-04-26",
+      "title": "Game 7",
+      "theme": "All things (of other) Sports",
+      "themeDescription": "Dress up in any other sports and play Kickball!",
+      "fieldSetupTime": "2:30 PM",
+      "fieldPackDownTime": "5:00 PM",
+      "fieldSetupTeams": ["Purple", "Pink", "Black", "Blue", "Green"],
+      "fieldPackDownTeams": ["Apple", "Baby Blue", "Chocolate"],
+      "matches": [
+        {
+          "time": "3:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Purple", "away": "Orange" },
+            { "field": "Road", "home": "Pink", "away": "Black" },
+            { "field": "Middle", "home": "Blue", "away": "Red" },
+            { "field": "Water", "home": "Green", "away": "Yellow" }
+          ]
+        },
+        {
+          "time": "4:00 PM",
+          "fixtures": [
+            { "field": "Kiosk", "home": "Lilac", "away": "Apple" },
+            { "field": "Road", "home": null, "away": null, "note": "N/A" },
+            { "field": "Middle", "home": "Hay", "away": "Baby Blue" },
+            { "field": "Water", "home": "Teal", "away": "Chocolate" }
+          ]
+        }
+      ],
+      "postPlaySocial": "Kings Cross Hotel Rooftop"
+    }
+  ]
+}

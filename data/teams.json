@@ -1,0 +1,86 @@
+{
+  "Black": {
+    "name": "Shade Brigade",
+    "emoji": "🕶️",
+    "color": "#1a1a2e",
+    "pillLabelColor": "#e8e9f2"
+  },
+  "Purple": {
+    "name": "The Drew Berrymores",
+    "emoji": "🫐",
+    "color": "#7c3aed",
+    "pillLabelColor": "#faf5ff"
+  },
+  "Apple": {
+    "name": "Kicking Grass",
+    "emoji": "🍏",
+    "color": "#a3e635",
+    "pillLabelColor": "#14532d"
+  },
+  "Orange": {
+    "name": "The Big Buoys",
+    "emoji": "🛟",
+    "color": "#ff6b00",
+    "pillLabelColor": "#5c1f00"
+  },
+  "Red": {
+    "name": "Devilish Divas",
+    "emoji": "😈",
+    "color": "#ef4444",
+    "pillLabelColor": "#fef2f2"
+  },
+  "Blue": {
+    "name": "LaBlubus",
+    "emoji": "🦋",
+    "color": "#3b82f6",
+    "pillLabelColor": "#00e8ff"
+  },
+  "Yellow": {
+    "name": "Lemon DeGeneres",
+    "emoji": "🍋",
+    "color": "#f1c40f",
+    "pillLabelColor": "#713f12"
+  },
+  "Green": {
+    "name": "The Green Flags",
+    "emoji": "💚",
+    "color": "#16a34a",
+    "pillLabelColor": "#ecfdf5"
+  },
+  "Pink": {
+    "name": "Pinkerbells",
+    "emoji": "🧚",
+    "color": "#ec4899",
+    "pillLabelColor": "#fdf2f8"
+  },
+  "Hay": {
+    "name": "Fifty Shades of Grain",
+    "emoji": "🌾",
+    "color": "#d4a843",
+    "pillLabelColor": "#422006"
+  },
+  "Lilac": {
+    "name": "Kath & Kimethyst",
+    "emoji": "💎",
+    "color": "#e9d5ff",
+    "pillLabelColor": "#6b21a8"
+  },
+  "Chocolate": {
+    "name": "Schitt's Kick",
+    "emoji": "🍫",
+    "color": "#92400e",
+    "pillLabelColor": "#fffbeb"
+  },
+  "Baby Blue": {
+    "name": "The Bebe Blues",
+    "emoji": "👶",
+    "color": "#7dd3fc",
+    "pillLabelColor": "#0c4a6e"
+  },
+  "Teal": {
+    "name": "HeaTEALed Rivalry",
+    "emoji": "🦚",
+    "color": "#14b8a6",
+    "pillLabelColor": "#f0fdfa"
+  }
+}
