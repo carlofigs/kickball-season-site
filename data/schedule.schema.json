@@ -4,9 +4,14 @@
   "title": "Kickball season schedule",
   "description": "Games, match blocks, and field duties for a kickball season.",
   "type": "object",
-  "required": ["games"],
+  "required": ["teams", "games"],
   "additionalProperties": false,
   "properties": {
+    "teams": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/definitions/teamDef" }
+    },
     "games": {
       "type": "array",
       "minItems": 1,
@@ -14,6 +19,17 @@
     }
   },
   "definitions": {
+    "teamDef": {
+      "type": "object",
+      "required": ["name", "emoji", "color", "pillLabelColor"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "emoji": { "type": "string" },
+        "color": { "type": "string" },
+        "pillLabelColor": { "type": "string" }
+      }
+    },
     "pitchField": {
       "type": "string",
       "enum": ["Kiosk", "Road", "Middle", "Water"],

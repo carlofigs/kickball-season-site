@@ -1,5 +1,15 @@
 /** Aligns with `data/schedule.schema.json`. */
 
+/** Display metadata for a colour team (keyed by short name in `teams`). */
+export interface TeamDef {
+  name: string;
+  emoji: string;
+  /** Primary fill hex (team colour). */
+  color: string;
+  /** Text/icon colour on solid team pill for contrast. */
+  pillLabelColor: string;
+}
+
 /** Fixture pitch names — must match `definitions.pitchField` in the schema. */
 export type PitchField = 'Kiosk' | 'Road' | 'Middle' | 'Water';
 
@@ -36,5 +46,6 @@ export interface Game {
 }
 
 export interface ScheduleData {
+  teams: Record<string, TeamDef>;
   games: Game[];
 }

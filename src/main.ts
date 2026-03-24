@@ -1,19 +1,10 @@
 import type { Fixture, Game, PitchField, ScheduleData } from './types/schedule';
-import teamsJson from '../data/teams.json';
 import scheduleJson from '../data/schedule.json';
 
-interface TeamDef {
-  name: string;
-  emoji: string;
-  /** Primary fill hex (team colour). */
-  color: string;
-  /** Text/icon colour on solid team pill for contrast. */
-  pillLabelColor: string;
-}
+const SCHEDULE_DATA = scheduleJson as ScheduleData;
+const TEAMS = SCHEDULE_DATA.teams;
 
-const TEAMS = teamsJson as Record<string, TeamDef>;
-
-type TeamName = keyof typeof teamsJson & string;
+type TeamName = keyof ScheduleData['teams'] & string;
 
 const ALL_TEAMS_PILL_LABEL = '#f1f5f9';
 
@@ -26,8 +17,6 @@ function teamPillLabelColor(team: string): string {
   const t = TEAMS[team];
   return t != null ? t.pillLabelColor : ALL_TEAMS_PILL_LABEL;
 }
-
-const SCHEDULE_DATA = scheduleJson as ScheduleData;
 
 const THEME_EMOJIS: Record<number, string> = {
   1: '📸',
