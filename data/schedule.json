@@ -9,7 +9,7 @@
       "themeDescription": "Represent your team whether in a coloured tutu, headdress, or your favourite cap",
       "fieldSetupTime": "2:00 PM",
       "fieldPackDownTime": "5:00 PM",
-      "fieldSetupTeams": ["Black", "Purple", "Apple", "Orange", "Red"],
+      "fieldSetupTeams": ["Black", "Purple", "Orange", "Red"],
       "fieldPackDownTeams": ["Hay", "Chocolate", "Teal"],
       "matches": [
         {
@@ -41,8 +41,8 @@
       "themeDescription": "Get ready for a wicked good time—think emerald glam, gravity-defying curls, and hair that's totally spell-binding. The bolder the wig, the better!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
-      "fieldSetupTeams": ["Apple", "Hay", "Green", "Teal", "Baby Blue"],
-      "fieldPackDownTeams": ["Yellow", "Orange", "Black"],
+      "fieldSetupTeams": ["Apple", "Hay", "Green", "Baby Blue"],
+      "fieldPackDownTeams": ["Teal", "Yellow", "Orange", "Black"],
       "matches": [
         {
           "time": "3:00 PM",
@@ -137,8 +137,8 @@
       "themeDescription": "Parade around the field showcasing your most fabulous Easter Hat!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
-      "fieldSetupTeams": ["Green", "Yellow", "Baby Blue", "Red", "Blue"],
-      "fieldPackDownTeams": ["Apple", "Pink", "Lilac"],
+      "fieldSetupTeams": ["Green", "Yellow", "Baby Blue", "Blue"],
+      "fieldPackDownTeams": ["Red", "Apple", "Pink", "Lilac"],
       "matches": [
         {
           "time": "3:00 PM",
@@ -169,8 +169,8 @@
       "themeDescription": "Horses, Cow Folks",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
-      "fieldSetupTeams": ["Baby Blue", "Blue", "Hay", "Lilac", "Apple"],
-      "fieldPackDownTeams": ["Red", "Black", "Green"],
+      "fieldSetupTeams": ["Baby Blue", "Blue", "Lilac", "Apple"],
+      "fieldPackDownTeams": ["Hay", "Red", "Black", "Green"],
       "matches": [
         {
           "time": "3:00 PM",
@@ -201,8 +201,8 @@
       "themeDescription": "Dress up in any other sports and play Kickball!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
-      "fieldSetupTeams": ["Purple", "Pink", "Black", "Blue", "Green"],
-      "fieldPackDownTeams": ["Apple", "Baby Blue", "Chocolate"],
+      "fieldSetupTeams": ["Purple", "Pink", "Blue", "Green"],
+      "fieldPackDownTeams": ["Black", "Apple", "Baby Blue", "Chocolate"],
       "matches": [
         {
           "time": "3:00 PM",
