@@ -306,36 +306,6 @@ function updateViewToggleButtons(): void {
   setViewToggleButtonActive(simplifiedBtn, !isDetailed);
 }
 
-/** Same min-height for every simplified card so rows align across the whole grid. */
-function equalizeSimplifiedCardHeights(): void {
-  const grid = document.getElementById('simplified-grid');
-  if (grid == null) return;
-  const cards = [...grid.querySelectorAll('.simplified-card')] as HTMLElement[];
-  if (cards.length === 0) return;
-  cards.forEach((card) => {
-    card.style.minHeight = '';
-  });
-  void grid.offsetHeight;
-  let maxHeight = 0;
-  cards.forEach((card) => {
-    maxHeight = Math.max(maxHeight, card.offsetHeight);
-  });
-  if (maxHeight <= 0) return;
-  cards.forEach((card) => {
-    card.style.minHeight = `${maxHeight}px`;
-  });
-}
-
-let simplifiedCardResizeTimer: ReturnType<typeof setTimeout> | undefined;
-window.addEventListener('resize', () => {
-  clearTimeout(simplifiedCardResizeTimer);
-  simplifiedCardResizeTimer = setTimeout(() => {
-    if (document.getElementById('simplified-grid') != null) {
-      equalizeSimplifiedCardHeights();
-    }
-  }, 150);
-});
-
 function renderSimplifiedCards(): void {
   const container = document.getElementById('game-cards');
   if (container == null) return;
@@ -443,15 +413,7 @@ function renderSimplifiedCards(): void {
   });
 
   lucide.createIcons();
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      equalizeSimplifiedCardHeights();
-      setTimeout(() => {
-        equalizeSimplifiedCardHeights();
-        scheduleDeepLink();
-      }, 120);
-    });
-  });
+  scheduleDeepLink();
 }
 
 function updateSummary(): void {

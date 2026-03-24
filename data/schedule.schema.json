@@ -7,6 +7,10 @@
   "required": ["teams", "games"],
   "additionalProperties": false,
   "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional pointer to this schema file for editor validation (JSON Schema meta)."
+    },
     "teams": {
       "type": "object",
       "minProperties": 1,
