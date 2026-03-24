@@ -92,6 +92,7 @@
       "date": "2026-03-15",
       "title": "Game 1",
       "theme": "Team Colour Pride",
+      "themeEmoji": "📸",
       "themeDescription": "Represent your team whether in a coloured tutu, headdress, or your favourite cap",
       "fieldSetupTime": "2:00 PM",
       "fieldPackDownTime": "5:00 PM",
@@ -111,7 +112,6 @@
           "time": "4:00 PM",
           "fixtures": [
             { "field": "Kiosk", "home": "Pink", "away": "Hay" },
-            { "field": "Road", "home": null, "away": null, "note": "N/A" },
             { "field": "Middle", "home": "Lilac", "away": "Chocolate" },
             { "field": "Water", "home": "Baby Blue", "away": "Teal" }
           ]
@@ -124,6 +124,7 @@
       "date": "2026-03-22",
       "title": "Game 2",
       "theme": "Flip It Around… Wicked Wigs!",
+      "themeEmoji": "🧙‍♀️",
       "themeDescription": "Get ready for a wicked good time—think emerald glam, gravity-defying curls, and hair that's totally spell-binding. The bolder the wig, the better!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
@@ -144,7 +145,6 @@
           "fixtures": [
             { "field": "Kiosk", "home": "Purple", "away": "Yellow" },
             { "field": "Road", "home": "Blue", "away": "Orange" },
-            { "field": "Middle", "home": null, "away": null, "note": "N/A" },
             { "field": "Water", "home": "Red", "away": "Black" }
           ]
         }
@@ -156,6 +156,7 @@
       "date": "2026-03-29",
       "title": "Game 3 (same day as Game 4)",
       "theme": "Tu tu much",
+      "themeEmoji": "🩰",
       "themeDescription": "Wear your team colour tutus!",
       "fieldSetupTime": "1:30 PM",
       "fieldPackDownTime": null,
@@ -175,7 +176,6 @@
           "time": "3:00 PM",
           "fixtures": [
             { "field": "Kiosk", "home": "Pink", "away": "Teal" },
-            { "field": "Road", "home": null, "away": null, "note": "N/A" },
             { "field": "Middle", "home": "Chocolate", "away": "Hay" },
             { "field": "Water", "home": "Apple", "away": "Baby Blue" }
           ]
@@ -188,6 +188,7 @@
       "date": "2026-03-29",
       "title": "Game 4 (same day as Game 3)",
       "theme": "Tu tu much",
+      "themeEmoji": "🩰",
       "themeDescription": "Wear your team colour tutus!",
       "fieldSetupTime": null,
       "fieldPackDownTime": "6:00 PM",
@@ -198,7 +199,6 @@
           "time": "4:00 PM",
           "fixtures": [
             { "field": "Kiosk", "home": "Orange", "away": "Red" },
-            { "field": "Road", "home": null, "away": null, "note": "N/A" },
             { "field": "Middle", "home": "Black", "away": "Purple" },
             { "field": "Water", "home": "Green", "away": "Blue" }
           ]
@@ -220,6 +220,7 @@
       "date": "2026-04-12",
       "title": "Game 5",
       "theme": "Easter Hat Parade",
+      "themeEmoji": "🐣",
       "themeDescription": "Parade around the field showcasing your most fabulous Easter Hat!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
@@ -240,7 +241,6 @@
           "fixtures": [
             { "field": "Kiosk", "home": "Hay", "away": "Apple" },
             { "field": "Road", "home": "Chocolate", "away": "Pink" },
-            { "field": "Middle", "home": null, "away": null, "note": "N/A" },
             { "field": "Water", "home": "Teal", "away": "Lilac" }
           ]
         }
@@ -252,6 +252,7 @@
       "date": "2026-04-19",
       "title": "Game 6",
       "theme": "Yellow Brick Rodeo",
+      "themeEmoji": "🤠",
       "themeDescription": "Horses, Cow Folks",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
@@ -271,7 +272,6 @@
           "time": "4:00 PM",
           "fixtures": [
             { "field": "Kiosk", "home": "Yellow", "away": "Red" },
-            { "field": "Road", "home": null, "away": null, "note": "N/A" },
             { "field": "Middle", "home": "Orange", "away": "Black" },
             { "field": "Water", "home": "Purple", "away": "Green" }
           ]
@@ -284,6 +284,7 @@
       "date": "2026-04-26",
       "title": "Game 7",
       "theme": "All things (of other) Sports",
+      "themeEmoji": "🏈",
       "themeDescription": "Dress up in any other sports and play Kickball!",
       "fieldSetupTime": "2:30 PM",
       "fieldPackDownTime": "5:00 PM",
@@ -303,7 +304,6 @@
           "time": "4:00 PM",
           "fixtures": [
             { "field": "Kiosk", "home": "Lilac", "away": "Apple" },
-            { "field": "Road", "home": null, "away": null, "note": "N/A" },
             { "field": "Middle", "home": "Hay", "away": "Baby Blue" },
             { "field": "Water", "home": "Teal", "away": "Chocolate" }
           ]

@@ -1,0 +1,13 @@
+.cardBody {
+  max-height: 2000px;
+  overflow: hidden;
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease;
+  opacity: 1;
+}
+
+.cardBodyCollapsed {
+  max-height: 0;
+  opacity: 0;
+}

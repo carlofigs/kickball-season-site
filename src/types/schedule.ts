@@ -13,18 +13,11 @@ export interface TeamDef {
 /** Fixture pitch names — must match `definitions.pitchField` in the schema. */
 export type PitchField = 'Kiosk' | 'Road' | 'Middle' | 'Water';
 
-export type Fixture =
-  | {
-      field: PitchField;
-      home: string;
-      away: string;
-    }
-  | {
-      field: PitchField;
-      home: null;
-      away: null;
-      note: string;
-    };
+export interface Fixture {
+  field: PitchField;
+  home: string;
+  away: string;
+}
 
 export interface MatchBlock {
   time: string;
@@ -36,6 +29,7 @@ export interface Game {
   date: string;
   title: string;
   theme: string;
+  themeEmoji: string;
   themeDescription: string;
   fieldSetupTime: string | null;
   fieldPackDownTime: string | null;

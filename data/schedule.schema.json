@@ -46,6 +46,7 @@
         "date",
         "title",
         "theme",
+        "themeEmoji",
         "themeDescription",
         "fieldSetupTime",
         "fieldPackDownTime",
@@ -68,6 +69,10 @@
         },
         "title": { "type": "string" },
         "theme": { "type": "string" },
+        "themeEmoji": {
+          "type": "string",
+          "description": "Emoji for this game's theme (e.g. in team-view schedule cards)."
+        },
         "themeDescription": { "type": "string" },
         "fieldSetupTime": {
           "description": "Display time for field setup, or null if none.",
@@ -113,34 +118,15 @@
       }
     },
     "fixture": {
-      "description": "Either a normal matchup (home/away team names) or an N/A slot.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": ["field", "home", "away"],
-          "additionalProperties": false,
-          "properties": {
-            "field": { "$ref": "#/definitions/pitchField" },
-            "home": { "type": "string" },
-            "away": { "type": "string" }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["field", "home", "away", "note"],
-          "additionalProperties": false,
-          "properties": {
-            "field": { "$ref": "#/definitions/pitchField" },
-            "home": { "type": "null" },
-            "away": { "type": "null" },
-            "note": {
-              "type": "string",
-              "const": "N/A",
-              "description": "Placeholder row with no matchup."
-            }
-          }
-        }
-      ]
+      "description": "A matchup on a pitch (home and away team short names).",
+      "type": "object",
+      "required": ["field", "home", "away"],
+      "additionalProperties": false,
+      "properties": {
+        "field": { "$ref": "#/definitions/pitchField" },
+        "home": { "type": "string" },
+        "away": { "type": "string" }
+      }
     }
   }
 }

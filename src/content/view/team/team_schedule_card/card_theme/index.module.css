@@ -1,0 +1,4 @@
+/* Inherits --opp-r / --opp-g / --opp-b from the parent team schedule card. */
+.themeDivider {
+  border-top: 1px solid rgba(var(--opp-r), var(--opp-g), var(--opp-b), 0.14);
+}

@@ -1,0 +1,12 @@
+/* Split background uses CSS variables set at runtime. */
+.matchupStripBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    var(--matchup-home-bg) 0%,
+    var(--matchup-home-bg) 48.5%,
+    var(--matchup-away-bg) 51.5%,
+    var(--matchup-away-bg) 100%
+  );
+}

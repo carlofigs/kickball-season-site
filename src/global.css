@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+@source './**/*.{ts,tsx}';
+
+html {
+  background-color: var(--chrome-a);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--chrome-a);
+}
+
+:root {
+  --accent: #6b7280;
+  --accent-light: #f3f4f6;
+  --accent-dark: #4b5563;
+  /* Header + filter strip (set in App from selected team). */
+  --chrome-a: #ffffff;
+  --chrome-b: #f8fafc;
+  --chrome-c: #f1f5f9;
+  --chrome-border: rgba(226, 232, 240, 0.95);
+}
+
+* {
+  transition:
+    border-color 0.3s,
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* Added temporarily by JS when scrolling to a game from the URL hash/query. */
+.deep-link-highlight {
+  animation: deep-link-ring 2.4s ease-out;
+  outline: 2px solid #6366f1;
+  outline-offset: 4px;
+  border-radius: 0.875rem;
+}
+
+@keyframes deep-link-ring {
+  0% {
+    outline-color: #6366f1;
+    outline-offset: 4px;
+  }
+  35% {
+    outline-color: #818cf8;
+    outline-offset: 6px;
+  }
+  100% {
+    outline-color: transparent;
+    outline-offset: 8px;
+  }
+}

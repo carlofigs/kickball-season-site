@@ -1,0 +1,11 @@
+/* Inherits --opp-r / --opp-g / --opp-b from the parent team schedule card. */
+.fieldDutiesSection {
+  margin-top: auto;
+  padding: 0.75rem 0.875rem;
+  border-top: 1px solid rgba(var(--opp-r), var(--opp-g), var(--opp-b), 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--opp-r), var(--opp-g), var(--opp-b), 0.06) 0%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
+}

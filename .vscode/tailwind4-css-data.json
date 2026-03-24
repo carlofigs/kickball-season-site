@@ -1,0 +1,9 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@source",
+      "description": "Tailwind CSS v4: additional source paths to scan for class names (see tailwindcss.com)."
+    }
+  ]
+}
