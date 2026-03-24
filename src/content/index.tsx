@@ -14,7 +14,7 @@ export function Content({ schedule, teams, selectedTeam, collapsedByCard, onTogg
   const showTeamView = selectedTeam != null;
 
   return (
-    <main className="flex-1 w-full max-w-5xl mx-auto px-4 pt-4 pb-8" id="game-cards">
+    <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-4 pb-8" id="game-cards">
       {showTeamView ? (
         <TeamScheduleView schedule={schedule} teams={teams} selectedTeam={selectedTeam} />
       ) : (

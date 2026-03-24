@@ -120,12 +120,16 @@
     "fixture": {
       "description": "A matchup on a pitch (home and away team short names).",
       "type": "object",
-      "required": ["field", "home", "away"],
+      "required": ["field", "home", "away", "lineRefTeam"],
       "additionalProperties": false,
       "properties": {
         "field": { "$ref": "#/definitions/pitchField" },
         "home": { "type": "string" },
-        "away": { "type": "string" }
+        "away": { "type": "string" },
+        "lineRefTeam": {
+          "type": "string",
+          "description": "Team that provides a line ref for this matchup."
+        }
       }
     }
   }

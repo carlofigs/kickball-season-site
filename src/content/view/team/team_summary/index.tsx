@@ -14,6 +14,11 @@ export function TeamSummary({ teams, schedule, team }: Props) {
   const packdownGames = schedule.games
     .filter((game) => game.fieldPackDownTeams.includes(team))
     .map((game) => game.gameNumber);
+  const lineRefGames = schedule.games
+    .filter((game) =>
+      game.matches.some((block) => block.fixtures.some((fixture) => fixture.lineRefTeam === team))
+    )
+    .map((game) => game.gameNumber);
 
   let headingColor = teams[team].color;
   if (team === 'Apple') {
@@ -37,7 +42,7 @@ export function TeamSummary({ teams, schedule, team }: Props) {
         <h2 className="text-lg font-bold mb-3" style={{ color: headingColor }}>
           {teams[team].emoji} {team} · {teams[team].name}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-slate-700">
           <div className="rounded-lg bg-white/60 px-3 py-2 border border-slate-200/80">
             <span className="font-semibold text-slate-600">Field Setup:</span>{' '}
             <span>
@@ -51,6 +56,14 @@ export function TeamSummary({ teams, schedule, team }: Props) {
             <span>
               {packdownGames.length
                 ? packdownGames.map((gameNumber) => `Game ${gameNumber}`).join(', ')
+                : 'None'}
+            </span>
+          </div>
+          <div className="rounded-lg bg-white/60 px-3 py-2 border border-slate-200/80">
+            <span className="font-semibold text-slate-600">Line ref:</span>{' '}
+            <span>
+              {lineRefGames.length
+                ? lineRefGames.map((gameNumber) => `Game ${gameNumber}`).join(', ')
                 : 'None'}
             </span>
           </div>

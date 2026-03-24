@@ -19,7 +19,7 @@ export function Header() {
           borderBottomColor: 'var(--chrome-border)',
         }}
       >
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-4 sm:gap-y-0.5 sm:items-start">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-4 sm:gap-y-0.5 sm:items-start">
           <div
             className="hidden sm:flex shrink-0 sm:col-start-1 sm:row-start-1 sm:row-span-2 sm:self-center"
             aria-hidden="true"

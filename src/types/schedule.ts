@@ -17,6 +17,7 @@ export interface Fixture {
   field: PitchField;
   home: string;
   away: string;
+  lineRefTeam: string;
 }
 
 export interface MatchBlock {

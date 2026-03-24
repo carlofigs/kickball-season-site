@@ -2,7 +2,7 @@ import type { Fixture, Game, PitchField, ScheduleData } from '../../../../types/
 import { hexToRgb, teamColor, teamPillLabelColor } from '../../../../schedule_utils';
 import { TeamScheduleCardHeader } from './card_header';
 import { TeamScheduleCardTheme } from './card_theme';
-import { TeamScheduleFieldDuties } from './field_duties';
+import { TeamScheduleFieldDuties, type LineRefDutySlot } from './field_duties';
 import { TeamScheduleMatchLine } from './match_line';
 import styles from './index.module.css';
 
@@ -20,12 +20,26 @@ type Props = {
 
 export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
   const teamMatch = findTeamMatchForGame(game, selectedTeam);
-  if (teamMatch == null) return null;
+  const lineRefSlot = findLineRefDutySlotForGame(game, selectedTeam);
 
-  const { fixture } = teamMatch;
-  const opp = fixture.home === selectedTeam ? fixture.away : fixture.home;
-  const oppColor = teamColor(teams, opp);
-  const oppLabel = teamPillLabelColor(teams, opp);
+  if (teamMatch == null && lineRefSlot == null) return null;
+
+  let oppColor: string;
+  let oppLabel: string;
+  let headerPillName: string;
+
+  if (teamMatch != null) {
+    const { fixture } = teamMatch;
+    const opp = fixture.home === selectedTeam ? fixture.away : fixture.home;
+    oppColor = teamColor(teams, opp);
+    oppLabel = teamPillLabelColor(teams, opp);
+    headerPillName = opp;
+  } else {
+    oppColor = teamColor(teams, selectedTeam);
+    oppLabel = teamPillLabelColor(teams, selectedTeam);
+    headerPillName = 'Line ref';
+  }
+
   const oppRgb = hexToRgb(oppColor);
 
   return (
@@ -44,14 +58,16 @@ export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
         <TeamScheduleCardHeader
           gameNumber={game.gameNumber}
           date={game.date}
-          opponentName={opp}
+          opponentName={headerPillName}
           opponentColor={oppColor}
           opponentLabelColor={oppLabel}
         />
         <TeamScheduleCardTheme theme={game.theme} themeEmoji={game.themeEmoji} />
       </div>
       <div className="flex min-h-0 flex-1 flex-col p-0">
-        <TeamScheduleMatchLine time={teamMatch.time} field={teamMatch.field} />
+        {teamMatch != null ? (
+          <TeamScheduleMatchLine time={teamMatch.time} field={teamMatch.field} />
+        ) : null}
         <TeamScheduleFieldDuties
           setupTime={
             game.fieldSetupTeams.includes(selectedTeam) && game.fieldSetupTime
@@ -63,6 +79,7 @@ export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
               ? game.fieldPackDownTime
               : null
           }
+          lineRefSlot={lineRefSlot}
         />
       </div>
     </div>
@@ -78,6 +95,18 @@ function findTeamMatchForGame(game: Game, selectedTeam: string): TeamScheduleMat
           fixture,
           field: fixture.field,
         };
+      }
+    }
+  }
+  return null;
+}
+
+/** One line-ref assignment per team per game in current schedule data. */
+function findLineRefDutySlotForGame(game: Game, selectedTeam: string): LineRefDutySlot | null {
+  for (const block of game.matches) {
+    for (const fixture of block.fixtures) {
+      if (fixture.lineRefTeam === selectedTeam) {
+        return { time: block.time, field: fixture.field };
       }
     }
   }

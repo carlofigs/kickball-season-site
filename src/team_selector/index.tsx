@@ -25,7 +25,7 @@ export function TeamSelector({ teams, selectedTeam, onSelect }: Props) {
         borderBottomColor: 'var(--chrome-border)',
       }}
     >
-      <div className="max-w-5xl mx-auto px-4 py-2.5 md:py-3">
+      <div className="max-w-7xl mx-auto px-4 py-2.5 md:py-3">
         <p
           className="block text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-slate-400 mb-2"
           id="team-filter-heading"

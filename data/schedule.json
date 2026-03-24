@@ -102,18 +102,53 @@
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Black", "away": "Blue" },
-            { "field": "Road", "home": "Purple", "away": "Apple" },
-            { "field": "Middle", "home": "Orange", "away": "Yellow" },
-            { "field": "Water", "home": "Red", "away": "Green" }
+            {
+              "field": "Kiosk",
+              "home": "Black",
+              "away": "Blue",
+              "lineRefTeam": "Pink"
+            },
+            {
+              "field": "Road",
+              "home": "Purple",
+              "away": "Apple",
+              "lineRefTeam": "Chocolate"
+            },
+            {
+              "field": "Middle",
+              "home": "Orange",
+              "away": "Yellow",
+              "lineRefTeam": "Lilac"
+            },
+            {
+              "field": "Water",
+              "home": "Red",
+              "away": "Green",
+              "lineRefTeam": "Baby Blue"
+            }
           ]
         },
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Pink", "away": "Hay" },
-            { "field": "Middle", "home": "Lilac", "away": "Chocolate" },
-            { "field": "Water", "home": "Baby Blue", "away": "Teal" }
+            {
+              "field": "Kiosk",
+              "home": "Pink",
+              "away": "Hay",
+              "lineRefTeam": "Blue"
+            },
+            {
+              "field": "Middle",
+              "home": "Lilac",
+              "away": "Chocolate",
+              "lineRefTeam": "Yellow"
+            },
+            {
+              "field": "Water",
+              "home": "Baby Blue",
+              "away": "Teal",
+              "lineRefTeam": "Green"
+            }
           ]
         }
       ],
@@ -134,18 +169,53 @@
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Apple", "away": "Chocolate" },
-            { "field": "Road", "home": "Hay", "away": "Lilac" },
-            { "field": "Middle", "home": "Green", "away": "Teal" },
-            { "field": "Water", "home": "Baby Blue", "away": "Pink" }
+            {
+              "field": "Kiosk",
+              "home": "Apple",
+              "away": "Chocolate",
+              "lineRefTeam": "Purple"
+            },
+            {
+              "field": "Road",
+              "home": "Hay",
+              "away": "Lilac",
+              "lineRefTeam": "Blue"
+            },
+            {
+              "field": "Middle",
+              "home": "Green",
+              "away": "Teal",
+              "lineRefTeam": "Orange"
+            },
+            {
+              "field": "Water",
+              "home": "Baby Blue",
+              "away": "Pink",
+              "lineRefTeam": "Red"
+            }
           ]
         },
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Purple", "away": "Yellow" },
-            { "field": "Road", "home": "Blue", "away": "Orange" },
-            { "field": "Water", "home": "Red", "away": "Black" }
+            {
+              "field": "Kiosk",
+              "home": "Purple",
+              "away": "Yellow",
+              "lineRefTeam": "Chocolate"
+            },
+            {
+              "field": "Road",
+              "home": "Blue",
+              "away": "Orange",
+              "lineRefTeam": "Lilac"
+            },
+            {
+              "field": "Water",
+              "home": "Red",
+              "away": "Black",
+              "lineRefTeam": "Pink"
+            }
           ]
         }
       ],
@@ -166,18 +236,53 @@
         {
           "time": "2:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Black", "away": "Green" },
-            { "field": "Road", "home": "Orange", "away": "Lilac" },
-            { "field": "Middle", "home": "Yellow", "away": "Blue" },
-            { "field": "Water", "home": "Red", "away": "Purple" }
+            {
+              "field": "Kiosk",
+              "home": "Black",
+              "away": "Green",
+              "lineRefTeam": "Pink"
+            },
+            {
+              "field": "Road",
+              "home": "Orange",
+              "away": "Lilac",
+              "lineRefTeam": "Baby Blue"
+            },
+            {
+              "field": "Middle",
+              "home": "Yellow",
+              "away": "Blue",
+              "lineRefTeam": "Chocolate"
+            },
+            {
+              "field": "Water",
+              "home": "Red",
+              "away": "Purple",
+              "lineRefTeam": "Apple"
+            }
           ]
         },
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Pink", "away": "Teal" },
-            { "field": "Middle", "home": "Chocolate", "away": "Hay" },
-            { "field": "Water", "home": "Apple", "away": "Baby Blue" }
+            {
+              "field": "Kiosk",
+              "home": "Pink",
+              "away": "Teal",
+              "lineRefTeam": "Green"
+            },
+            {
+              "field": "Middle",
+              "home": "Chocolate",
+              "away": "Hay",
+              "lineRefTeam": "Blue"
+            },
+            {
+              "field": "Water",
+              "home": "Apple",
+              "away": "Baby Blue",
+              "lineRefTeam": "Purple"
+            }
           ]
         }
       ],
@@ -198,18 +303,53 @@
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Orange", "away": "Red" },
-            { "field": "Middle", "home": "Black", "away": "Purple" },
-            { "field": "Water", "home": "Green", "away": "Blue" }
+            {
+              "field": "Kiosk",
+              "home": "Orange",
+              "away": "Red",
+              "lineRefTeam": "Baby Blue"
+            },
+            {
+              "field": "Middle",
+              "home": "Black",
+              "away": "Purple",
+              "lineRefTeam": "Apple"
+            },
+            {
+              "field": "Water",
+              "home": "Green",
+              "away": "Blue",
+              "lineRefTeam": "Hay"
+            }
           ]
         },
         {
           "time": "5:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Lilac", "away": "Baby Blue" },
-            { "field": "Road", "home": "Chocolate", "away": "Yellow" },
-            { "field": "Middle", "home": "Pink", "away": "Apple" },
-            { "field": "Water", "home": "Teal", "away": "Hay" }
+            {
+              "field": "Kiosk",
+              "home": "Lilac",
+              "away": "Baby Blue",
+              "lineRefTeam": "Orange"
+            },
+            {
+              "field": "Road",
+              "home": "Chocolate",
+              "away": "Yellow",
+              "lineRefTeam": "Blue"
+            },
+            {
+              "field": "Middle",
+              "home": "Pink",
+              "away": "Apple",
+              "lineRefTeam": "Black"
+            },
+            {
+              "field": "Water",
+              "home": "Teal",
+              "away": "Hay",
+              "lineRefTeam": "Green"
+            }
           ]
         }
       ],
@@ -230,18 +370,53 @@
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Green", "away": "Orange" },
-            { "field": "Road", "home": "Yellow", "away": "Black" },
-            { "field": "Middle", "home": "Baby Blue", "away": "Red" },
-            { "field": "Water", "home": "Blue", "away": "Purple" }
+            {
+              "field": "Kiosk",
+              "home": "Green",
+              "away": "Orange",
+              "lineRefTeam": "Hay"
+            },
+            {
+              "field": "Road",
+              "home": "Yellow",
+              "away": "Black",
+              "lineRefTeam": "Chocolate"
+            },
+            {
+              "field": "Middle",
+              "home": "Baby Blue",
+              "away": "Red",
+              "lineRefTeam": "Pink"
+            },
+            {
+              "field": "Water",
+              "home": "Blue",
+              "away": "Purple",
+              "lineRefTeam": "Teal"
+            }
           ]
         },
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Hay", "away": "Apple" },
-            { "field": "Road", "home": "Chocolate", "away": "Pink" },
-            { "field": "Water", "home": "Teal", "away": "Lilac" }
+            {
+              "field": "Kiosk",
+              "home": "Hay",
+              "away": "Apple",
+              "lineRefTeam": "Orange"
+            },
+            {
+              "field": "Road",
+              "home": "Chocolate",
+              "away": "Pink",
+              "lineRefTeam": "Black"
+            },
+            {
+              "field": "Water",
+              "home": "Teal",
+              "away": "Lilac",
+              "lineRefTeam": "Purple"
+            }
           ]
         }
       ],
@@ -262,18 +437,53 @@
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Baby Blue", "away": "Chocolate" },
-            { "field": "Road", "home": "Blue", "away": "Hay" },
-            { "field": "Middle", "home": "Lilac", "away": "Pink" },
-            { "field": "Water", "home": "Apple", "away": "Teal" }
+            {
+              "field": "Kiosk",
+              "home": "Baby Blue",
+              "away": "Chocolate",
+              "lineRefTeam": "Yellow"
+            },
+            {
+              "field": "Road",
+              "home": "Blue",
+              "away": "Hay",
+              "lineRefTeam": "Green"
+            },
+            {
+              "field": "Middle",
+              "home": "Lilac",
+              "away": "Pink",
+              "lineRefTeam": "Orange"
+            },
+            {
+              "field": "Water",
+              "home": "Apple",
+              "away": "Teal",
+              "lineRefTeam": "Purple"
+            }
           ]
         },
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Yellow", "away": "Red" },
-            { "field": "Middle", "home": "Orange", "away": "Black" },
-            { "field": "Water", "home": "Purple", "away": "Green" }
+            {
+              "field": "Kiosk",
+              "home": "Yellow",
+              "away": "Red",
+              "lineRefTeam": "Chocolate"
+            },
+            {
+              "field": "Middle",
+              "home": "Orange",
+              "away": "Black",
+              "lineRefTeam": "Pink"
+            },
+            {
+              "field": "Water",
+              "home": "Purple",
+              "away": "Green",
+              "lineRefTeam": "Teal"
+            }
           ]
         }
       ],
@@ -294,18 +504,53 @@
         {
           "time": "3:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Purple", "away": "Orange" },
-            { "field": "Road", "home": "Pink", "away": "Black" },
-            { "field": "Middle", "home": "Blue", "away": "Red" },
-            { "field": "Water", "home": "Green", "away": "Yellow" }
+            {
+              "field": "Kiosk",
+              "home": "Purple",
+              "away": "Orange",
+              "lineRefTeam": "Lilac"
+            },
+            {
+              "field": "Road",
+              "home": "Pink",
+              "away": "Black",
+              "lineRefTeam": "Purple"
+            },
+            {
+              "field": "Middle",
+              "home": "Blue",
+              "away": "Red",
+              "lineRefTeam": "Hay"
+            },
+            {
+              "field": "Water",
+              "home": "Green",
+              "away": "Yellow",
+              "lineRefTeam": "Teal"
+            }
           ]
         },
         {
           "time": "4:00 PM",
           "fixtures": [
-            { "field": "Kiosk", "home": "Lilac", "away": "Apple" },
-            { "field": "Middle", "home": "Hay", "away": "Baby Blue" },
-            { "field": "Water", "home": "Teal", "away": "Chocolate" }
+            {
+              "field": "Kiosk",
+              "home": "Lilac",
+              "away": "Apple",
+              "lineRefTeam": "Orange"
+            },
+            {
+              "field": "Middle",
+              "home": "Hay",
+              "away": "Baby Blue",
+              "lineRefTeam": "Red"
+            },
+            {
+              "field": "Water",
+              "home": "Teal",
+              "away": "Chocolate",
+              "lineRefTeam": "Yellow"
+            }
           ]
         }
       ],

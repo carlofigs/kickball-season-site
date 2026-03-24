@@ -35,10 +35,7 @@ export function App() {
       document.documentElement.style.setProperty('--chrome-border', 'rgba(226, 232, 240, 0.95)');
     } else {
       const teamHex = scheduleData.teams[selectedTeam].color;
-      document.documentElement.style.setProperty(
-        '--chrome-a',
-        lightenTowardWhite(teamHex, 0.04)
-      );
+      document.documentElement.style.setProperty('--chrome-a', lightenTowardWhite(teamHex, 0.04));
       chromeB = lightenTowardWhite(teamHex, 0.06);
       document.documentElement.style.setProperty('--chrome-b', chromeB);
       document.documentElement.style.setProperty('--chrome-c', lightenTowardWhite(teamHex, 0.13));
@@ -127,8 +124,7 @@ export function App() {
         className="pointer-events-none fixed top-0 left-0 right-0 z-20"
         style={{
           height: 'env(safe-area-inset-top, 0px)',
-          background:
-            'linear-gradient(165deg, var(--chrome-a) 0%, var(--chrome-b) 100%)',
+          background: 'linear-gradient(165deg, var(--chrome-a) 0%, var(--chrome-b) 100%)',
         }}
       />
       <Header />
