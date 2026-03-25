@@ -38,3 +38,15 @@ export function formatDate(dateStr: string): string {
   const year = parsedDate.getFullYear();
   return `${day}/${month}/${year}`;
 }
+
+/**
+ * Same `team` query param as the team filter; keeps pathname and hash so game deep links stay valid.
+ */
+export function hrefForTeamDeepLink(team: string): string {
+  if (typeof window === 'undefined') {
+    return `?team=${encodeURIComponent(team)}`;
+  }
+  const url = new URL(window.location.href);
+  url.searchParams.set('team', team);
+  return `${url.pathname}${url.search}${url.hash}`;
+}

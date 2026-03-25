@@ -4,6 +4,7 @@ import { Footer } from './footer';
 import { Header } from './header';
 import type { ScheduleData } from './types/schedule';
 import { darkenColor, lightenTowardWhite } from './schedule_utils';
+import { downloadTeamScheduleIcs } from './calendar/team_schedule_ics';
 import { Content } from './content';
 import { TeamSelector } from './team_selector';
 
@@ -115,6 +116,11 @@ export function App() {
     });
   }, []);
 
+  const handleAddTeamCalendar = useCallback(() => {
+    if (selectedTeam == null) return;
+    downloadTeamScheduleIcs(scheduleData, selectedTeam);
+  }, [selectedTeam]);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Opaque band for the status-bar safe area so scrolling content does not show
@@ -132,6 +138,7 @@ export function App() {
         teams={scheduleData.teams}
         selectedTeam={selectedTeam}
         onSelect={(team) => selectTeam(team)}
+        onAddTeamCalendar={handleAddTeamCalendar}
       />
       <Content
         schedule={scheduleData}

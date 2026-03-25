@@ -97,7 +97,7 @@
       "fieldSetupTime": "2:00 PM",
       "fieldPackDownTime": "5:00 PM",
       "fieldSetupTeams": ["Black", "Purple", "Orange", "Red"],
-      "fieldPackDownTeams": ["Hay", "Chocolate", "Teal"],
+      "fieldPackDownTeams": ["Apple", "Hay", "Chocolate", "Teal"],
       "matches": [
         {
           "time": "3:00 PM",

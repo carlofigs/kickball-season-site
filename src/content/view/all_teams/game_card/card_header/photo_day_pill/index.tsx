@@ -1,3 +1,5 @@
+import { Camera } from 'lucide-react';
+
 type Props = {
   visible: boolean;
 };
@@ -7,13 +9,11 @@ export function PhotoDayPill({ visible }: Props) {
 
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/45 bg-gradient-to-b from-amber-50 to-amber-100 px-3 py-1.5 text-[0.65rem] font-bold leading-snug tracking-wide text-amber-900 shadow-sm"
+      className="inline-flex items-center gap-1 rounded-md border border-amber-200/90 bg-amber-50 px-2 py-0.5 text-[0.65rem] font-semibold leading-none text-amber-900/90"
       title="Photo theme this game"
     >
-      <span className="inline-flex text-[0.95rem] leading-none" aria-hidden="true">
-        📸
-      </span>
-      <span className="relative top-px">Photo Day</span>
+      <Camera className="size-3 shrink-0 text-amber-700/90" strokeWidth={2} aria-hidden />
+      <span>Photo Day</span>
     </span>
   );
 }

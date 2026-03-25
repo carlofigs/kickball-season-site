@@ -5,8 +5,9 @@ import { defineConfig } from 'vite';
 /** GitHub Pages project site: https://<user>.github.io/<repo>/ — must match the repo name. */
 const GITHUB_PAGES_BASE = '/kickball/';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root: '.',
-  base: GITHUB_PAGES_BASE,
+  /** Dev uses `/` so manifest and icons work at `localhost`; build keeps the Pages subpath. */
+  base: command === 'build' ? GITHUB_PAGES_BASE : '/',
   plugins: [tailwindcss(), react()],
-});
+}));

@@ -20,31 +20,20 @@ type Props = {
 
 export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
   const teamMatch = findTeamMatchForGame(game, selectedTeam);
+  if (teamMatch == null) return null;
+
   const lineRefSlot = findLineRefDutySlotForGame(game, selectedTeam);
 
-  if (teamMatch == null && lineRefSlot == null) return null;
-
-  let oppColor: string;
-  let oppLabel: string;
-  let headerPillName: string;
-
-  if (teamMatch != null) {
-    const { fixture } = teamMatch;
-    const opp = fixture.home === selectedTeam ? fixture.away : fixture.home;
-    oppColor = teamColor(teams, opp);
-    oppLabel = teamPillLabelColor(teams, opp);
-    headerPillName = opp;
-  } else {
-    oppColor = teamColor(teams, selectedTeam);
-    oppLabel = teamPillLabelColor(teams, selectedTeam);
-    headerPillName = 'Line ref';
-  }
+  const { fixture } = teamMatch;
+  const opponent = fixture.home === selectedTeam ? fixture.away : fixture.home;
+  const oppColor = teamColor(teams, opponent);
+  const oppLabel = teamPillLabelColor(teams, opponent);
 
   const oppRgb = hexToRgb(oppColor);
 
   return (
     <div
-      className={`${styles.teamScheduleCard} flex min-h-0 flex-col overflow-hidden rounded-[0.875rem] border border-slate-200 border-l-[5px] p-0`}
+      className={`${styles.teamScheduleCard} flex h-full min-h-0 flex-col overflow-hidden rounded-[0.875rem] border border-slate-200 border-l-[5px] p-0`}
       data-card-id={String(game.gameNumber)}
       data-game-id={String(game.gameNumber)}
       style={{
@@ -58,16 +47,19 @@ export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
         <TeamScheduleCardHeader
           gameNumber={game.gameNumber}
           date={game.date}
-          opponentName={headerPillName}
+          opponentTeam={opponent}
           opponentColor={oppColor}
           opponentLabelColor={oppLabel}
         />
-        <TeamScheduleCardTheme theme={game.theme} themeEmoji={game.themeEmoji} />
+        <TeamScheduleCardTheme
+          theme={game.theme}
+          themeEmoji={game.themeEmoji}
+          themeDescription={game.themeDescription}
+        />
       </div>
       <div className="flex min-h-0 flex-1 flex-col p-0">
-        {teamMatch != null ? (
-          <TeamScheduleMatchLine time={teamMatch.time} field={teamMatch.field} />
-        ) : null}
+        <div className="min-h-0 min-w-0 flex-1 shrink" aria-hidden />
+        <TeamScheduleMatchLine time={teamMatch.time} field={teamMatch.field} />
         <TeamScheduleFieldDuties
           setupTime={
             game.fieldSetupTeams.includes(selectedTeam) && game.fieldSetupTime
@@ -101,7 +93,6 @@ function findTeamMatchForGame(game: Game, selectedTeam: string): TeamScheduleMat
   return null;
 }
 
-/** One line-ref assignment per team per game in current schedule data. */
 function findLineRefDutySlotForGame(game: Game, selectedTeam: string): LineRefDutySlot | null {
   for (const block of game.matches) {
     for (const fixture of block.fixtures) {

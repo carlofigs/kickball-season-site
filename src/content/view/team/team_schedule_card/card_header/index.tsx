@@ -1,9 +1,9 @@
-import { formatDate } from '../../../../../schedule_utils';
+import { formatDate, hrefForTeamDeepLink } from '../../../../../schedule_utils';
 
 type Props = {
   gameNumber: number;
   date: string;
-  opponentName: string;
+  opponentTeam: string;
   opponentColor: string;
   opponentLabelColor: string;
 };
@@ -11,7 +11,7 @@ type Props = {
 export function TeamScheduleCardHeader({
   gameNumber,
   date,
-  opponentName,
+  opponentTeam,
   opponentColor,
   opponentLabelColor,
 }: Props) {
@@ -26,12 +26,14 @@ export function TeamScheduleCardHeader({
         </span>
         <span className="text-[0.7rem] font-semibold text-slate-400">{formatDate(date)}</span>
       </div>
-      <span
-        className="inline-flex shrink-0 items-center rounded-full px-[0.65rem] py-[0.35rem] text-[0.65rem] font-bold tracking-wide shadow-sm"
+      <a
+        href={hrefForTeamDeepLink(opponentTeam)}
+        className="inline-flex shrink-0 items-center rounded-full px-[0.65rem] py-[0.35rem] text-[0.65rem] font-bold tracking-wide shadow-sm no-underline transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/55"
         style={{ background: opponentColor, color: opponentLabelColor }}
+        aria-label={`View schedule for ${opponentTeam}`}
       >
-        {opponentName}
-      </span>
+        {opponentTeam}
+      </a>
     </div>
   );
 }

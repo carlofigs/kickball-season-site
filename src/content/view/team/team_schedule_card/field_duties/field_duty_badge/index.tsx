@@ -11,7 +11,7 @@ const VARIANT_CLASS: Record<DutyVariant, string> = {
 const VARIANT_LABEL: Record<DutyVariant, string> = {
   setup: 'Field Setup',
   pack: 'Field Pack Down',
-  lineRef: 'Line ref',
+  lineRef: 'Line Ref',
 };
 
 type Props = {

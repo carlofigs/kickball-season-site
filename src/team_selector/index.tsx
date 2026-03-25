@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react';
 import type { ScheduleData } from '../types/schedule';
 import styles from './index.module.css';
+import { MobileMenu } from './mobile_menu';
 
 const NEUTRAL = '#6b7280';
 const ALL_LABEL = '#f1f5f9';
@@ -9,9 +10,10 @@ type Props = {
   teams: ScheduleData['teams'];
   selectedTeam: string | null;
   onSelect: (team: string | null) => void;
+  onAddTeamCalendar: () => void;
 };
 
-export function TeamSelector({ teams, selectedTeam, onSelect }: Props) {
+export function TeamSelector({ teams, selectedTeam, onSelect, onAddTeamCalendar }: Props) {
   const names = Object.keys(teams);
   const sorted = names.slice().sort();
 
@@ -75,30 +77,36 @@ export function TeamSelector({ teams, selectedTeam, onSelect }: Props) {
             ))}
           </div>
         </div>
-        <div className="relative md:hidden">
-          <select
-            className="w-full min-h-[2.75rem] appearance-none rounded-lg border bg-white py-2 pl-3 pr-10 text-sm font-semibold shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            style={{ borderColor: 'var(--chrome-border)' }}
-            aria-label="Choose a team to filter the schedule"
-            value={selectedTeam ?? ''}
-            onChange={(changeEvent) => {
-              const selectedValue = changeEvent.target.value;
-              onSelect(selectedValue === '' ? null : selectedValue);
-            }}
-          >
-            <option value="">All Teams</option>
-            {sorted.map((team) => (
-              <option key={team} value={team}>
-                {team}
-              </option>
-            ))}
-          </select>
-          <span
-            className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400"
-            aria-hidden
-          >
-            <ChevronDown className="size-5 shrink-0" strokeWidth={2} />
-          </span>
+        <div className="relative flex gap-2 items-stretch md:hidden">
+          <div className="relative min-w-0 flex-1">
+            <select
+              className="w-full min-h-[2.75rem] appearance-none rounded-lg border bg-white py-2 pl-3 pr-10 text-sm font-semibold shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              style={{ borderColor: 'var(--chrome-border)' }}
+              aria-label="Choose a team to filter the schedule"
+              value={selectedTeam ?? ''}
+              onChange={(changeEvent) => {
+                const selectedValue = changeEvent.target.value;
+                onSelect(selectedValue === '' ? null : selectedValue);
+              }}
+            >
+              <option value="">All Teams</option>
+              {sorted.map((team) => (
+                <option key={team} value={team}>
+                  {team}
+                </option>
+              ))}
+            </select>
+            <span
+              className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400"
+              aria-hidden
+            >
+              <ChevronDown className="size-5 shrink-0" strokeWidth={2} />
+            </span>
+          </div>
+          <MobileMenu
+            addToCalendarDisabled={selectedTeam == null}
+            onAddToCalendar={onAddTeamCalendar}
+          />
         </div>
       </div>
     </nav>
