@@ -96,7 +96,7 @@ function findTeamMatchForGame(game: Game, selectedTeam: string): TeamScheduleMat
 function findLineRefDutySlotForGame(game: Game, selectedTeam: string): LineRefDutySlot | null {
   for (const block of game.matches) {
     for (const fixture of block.fixtures) {
-      if (fixture.lineRefTeam === selectedTeam) {
+      if (fixture.lineRefTeams.includes(selectedTeam)) {
         return { time: block.time, field: fixture.field };
       }
     }

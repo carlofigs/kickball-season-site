@@ -17,7 +17,9 @@ export function TeamSummary({ teams, schedule, team }: Props) {
     .map((game) => game.gameNumber);
   const lineRefGames = schedule.games
     .filter((game) =>
-      game.matches.some((block) => block.fixtures.some((fixture) => fixture.lineRefTeam === team))
+      game.matches.some((block) =>
+        block.fixtures.some((fixture) => fixture.lineRefTeams.includes(team))
+      )
     )
     .map((game) => game.gameNumber);
 

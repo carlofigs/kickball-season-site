@@ -79,7 +79,7 @@ function buildFieldDutyEntries(games: Game[]): FieldDutyEntry[] {
               key: `lineref-${game.gameNumber}-${blockIndex}`,
               variant: 'lineRef' as const,
               time: block.time,
-              teamNames: [...new Set(block.fixtures.map((fixture) => fixture.lineRefTeam))],
+              teamNames: [...new Set(block.fixtures.flatMap((fixture) => fixture.lineRefTeams))],
             },
           ]
         : []

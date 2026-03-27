@@ -120,7 +120,7 @@ function buildSingleGameEventForTeam(
         startTimes.push(start);
         endTimes.push(end);
         detailLines.push(`Match vs ${opponent} @ ${fieldLabel} (${block.time})`);
-      } else if (fixture.lineRefTeam === team) {
+      } else if (fixture.lineRefTeams.includes(team)) {
         startTimes.push(start);
         endTimes.push(end);
         detailLines.push(

@@ -106,25 +106,25 @@
               "field": "Kiosk",
               "home": "Black",
               "away": "Blue",
-              "lineRefTeam": "Pink"
+              "lineRefTeams": ["Pink"]
             },
             {
               "field": "Road",
               "home": "Purple",
               "away": "Apple",
-              "lineRefTeam": "Chocolate"
+              "lineRefTeams": ["Chocolate"]
             },
             {
               "field": "Middle",
               "home": "Orange",
               "away": "Yellow",
-              "lineRefTeam": "Lilac"
+              "lineRefTeams": ["Lilac"]
             },
             {
               "field": "Water",
               "home": "Red",
               "away": "Green",
-              "lineRefTeam": "Baby Blue"
+              "lineRefTeams": ["Baby Blue"]
             }
           ]
         },
@@ -135,19 +135,19 @@
               "field": "Kiosk",
               "home": "Pink",
               "away": "Hay",
-              "lineRefTeam": "Blue"
+              "lineRefTeams": ["Blue"]
             },
             {
               "field": "Middle",
               "home": "Lilac",
               "away": "Chocolate",
-              "lineRefTeam": "Yellow"
+              "lineRefTeams": ["Yellow"]
             },
             {
               "field": "Water",
               "home": "Baby Blue",
               "away": "Teal",
-              "lineRefTeam": "Green"
+              "lineRefTeams": ["Green"]
             }
           ]
         }
@@ -173,25 +173,25 @@
               "field": "Kiosk",
               "home": "Apple",
               "away": "Chocolate",
-              "lineRefTeam": "Purple"
+              "lineRefTeams": ["Purple"]
             },
             {
               "field": "Road",
               "home": "Hay",
               "away": "Lilac",
-              "lineRefTeam": "Blue"
+              "lineRefTeams": ["Blue"]
             },
             {
               "field": "Middle",
               "home": "Green",
               "away": "Teal",
-              "lineRefTeam": "Orange"
+              "lineRefTeams": ["Orange"]
             },
             {
               "field": "Water",
               "home": "Baby Blue",
               "away": "Pink",
-              "lineRefTeam": "Red"
+              "lineRefTeams": ["Red"]
             }
           ]
         },
@@ -202,19 +202,19 @@
               "field": "Kiosk",
               "home": "Purple",
               "away": "Yellow",
-              "lineRefTeam": "Chocolate"
+              "lineRefTeams": ["Chocolate"]
             },
             {
               "field": "Road",
               "home": "Blue",
               "away": "Orange",
-              "lineRefTeam": "Lilac"
+              "lineRefTeams": ["Lilac"]
             },
             {
               "field": "Water",
               "home": "Red",
               "away": "Black",
-              "lineRefTeam": "Pink"
+              "lineRefTeams": ["Pink"]
             }
           ]
         }
@@ -240,25 +240,25 @@
               "field": "Kiosk",
               "home": "Black",
               "away": "Green",
-              "lineRefTeam": "Pink"
+              "lineRefTeams": ["Pink"]
             },
             {
               "field": "Road",
               "home": "Orange",
               "away": "Lilac",
-              "lineRefTeam": "Baby Blue"
+              "lineRefTeams": ["Baby Blue"]
             },
             {
               "field": "Middle",
               "home": "Yellow",
               "away": "Blue",
-              "lineRefTeam": "Chocolate"
+              "lineRefTeams": ["Chocolate"]
             },
             {
               "field": "Water",
               "home": "Red",
               "away": "Purple",
-              "lineRefTeam": "Apple"
+              "lineRefTeams": ["Apple"]
             }
           ]
         },
@@ -269,19 +269,19 @@
               "field": "Kiosk",
               "home": "Pink",
               "away": "Teal",
-              "lineRefTeam": "Green"
+              "lineRefTeams": ["Green"]
             },
             {
               "field": "Middle",
               "home": "Chocolate",
               "away": "Hay",
-              "lineRefTeam": "Blue"
+              "lineRefTeams": ["Lilac", "Blue"]
             },
             {
               "field": "Water",
               "home": "Apple",
               "away": "Baby Blue",
-              "lineRefTeam": "Purple"
+              "lineRefTeams": ["Purple"]
             }
           ]
         }
@@ -307,19 +307,19 @@
               "field": "Kiosk",
               "home": "Orange",
               "away": "Red",
-              "lineRefTeam": "Baby Blue"
+              "lineRefTeams": ["Baby Blue"]
             },
             {
               "field": "Middle",
               "home": "Black",
               "away": "Purple",
-              "lineRefTeam": "Apple"
+              "lineRefTeams": ["Apple"]
             },
             {
               "field": "Water",
               "home": "Green",
               "away": "Blue",
-              "lineRefTeam": "Hay"
+              "lineRefTeams": ["Hay"]
             }
           ]
         },
@@ -330,25 +330,25 @@
               "field": "Kiosk",
               "home": "Lilac",
               "away": "Baby Blue",
-              "lineRefTeam": "Orange"
+              "lineRefTeams": ["Orange"]
             },
             {
               "field": "Road",
               "home": "Chocolate",
               "away": "Yellow",
-              "lineRefTeam": "Blue"
+              "lineRefTeams": ["Blue"]
             },
             {
               "field": "Middle",
               "home": "Pink",
               "away": "Apple",
-              "lineRefTeam": "Black"
+              "lineRefTeams": ["Black"]
             },
             {
               "field": "Water",
               "home": "Teal",
               "away": "Hay",
-              "lineRefTeam": "Green"
+              "lineRefTeams": ["Purple", "Green"]
             }
           ]
         }
@@ -374,25 +374,25 @@
               "field": "Kiosk",
               "home": "Green",
               "away": "Orange",
-              "lineRefTeam": "Hay"
+              "lineRefTeams": ["Hay"]
             },
             {
               "field": "Road",
               "home": "Yellow",
               "away": "Black",
-              "lineRefTeam": "Chocolate"
+              "lineRefTeams": ["Chocolate"]
             },
             {
               "field": "Middle",
               "home": "Baby Blue",
               "away": "Red",
-              "lineRefTeam": "Pink"
+              "lineRefTeams": ["Pink"]
             },
             {
               "field": "Water",
               "home": "Blue",
               "away": "Purple",
-              "lineRefTeam": "Teal"
+              "lineRefTeams": ["Teal"]
             }
           ]
         },
@@ -403,19 +403,19 @@
               "field": "Kiosk",
               "home": "Hay",
               "away": "Apple",
-              "lineRefTeam": "Orange"
+              "lineRefTeams": ["Orange"]
             },
             {
               "field": "Road",
               "home": "Chocolate",
               "away": "Pink",
-              "lineRefTeam": "Black"
+              "lineRefTeams": ["Black"]
             },
             {
               "field": "Water",
               "home": "Teal",
               "away": "Lilac",
-              "lineRefTeam": "Purple"
+              "lineRefTeams": ["Purple"]
             }
           ]
         }
@@ -441,25 +441,25 @@
               "field": "Kiosk",
               "home": "Baby Blue",
               "away": "Chocolate",
-              "lineRefTeam": "Yellow"
+              "lineRefTeams": ["Yellow"]
             },
             {
               "field": "Road",
               "home": "Blue",
               "away": "Hay",
-              "lineRefTeam": "Green"
+              "lineRefTeams": ["Green"]
             },
             {
               "field": "Middle",
               "home": "Lilac",
               "away": "Pink",
-              "lineRefTeam": "Orange"
+              "lineRefTeams": ["Orange"]
             },
             {
               "field": "Water",
               "home": "Apple",
               "away": "Teal",
-              "lineRefTeam": "Purple"
+              "lineRefTeams": ["Purple"]
             }
           ]
         },
@@ -470,19 +470,19 @@
               "field": "Kiosk",
               "home": "Yellow",
               "away": "Red",
-              "lineRefTeam": "Chocolate"
+              "lineRefTeams": ["Chocolate"]
             },
             {
               "field": "Middle",
               "home": "Orange",
               "away": "Black",
-              "lineRefTeam": "Pink"
+              "lineRefTeams": ["Pink"]
             },
             {
               "field": "Water",
               "home": "Purple",
               "away": "Green",
-              "lineRefTeam": "Teal"
+              "lineRefTeams": ["Teal"]
             }
           ]
         }
@@ -508,25 +508,25 @@
               "field": "Kiosk",
               "home": "Purple",
               "away": "Orange",
-              "lineRefTeam": "Lilac"
+              "lineRefTeams": ["Lilac"]
             },
             {
               "field": "Road",
               "home": "Pink",
               "away": "Black",
-              "lineRefTeam": "Purple"
+              "lineRefTeams": ["Purple"]
             },
             {
               "field": "Middle",
               "home": "Blue",
               "away": "Red",
-              "lineRefTeam": "Hay"
+              "lineRefTeams": ["Hay"]
             },
             {
               "field": "Water",
               "home": "Green",
               "away": "Yellow",
-              "lineRefTeam": "Teal"
+              "lineRefTeams": ["Teal"]
             }
           ]
         },
@@ -537,19 +537,19 @@
               "field": "Kiosk",
               "home": "Lilac",
               "away": "Apple",
-              "lineRefTeam": "Orange"
+              "lineRefTeams": ["Orange"]
             },
             {
               "field": "Middle",
               "home": "Hay",
               "away": "Baby Blue",
-              "lineRefTeam": "Red"
+              "lineRefTeams": ["Red"]
             },
             {
               "field": "Water",
               "home": "Teal",
               "away": "Chocolate",
-              "lineRefTeam": "Yellow"
+              "lineRefTeams": ["Yellow"]
             }
           ]
         }
