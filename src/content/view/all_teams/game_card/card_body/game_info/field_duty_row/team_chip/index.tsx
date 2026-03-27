@@ -3,7 +3,7 @@ import {
   hrefForTeamDeepLink,
   teamColor,
   teamPillLabelColor,
-} from '../../../../../../../../schedule_utils';
+} from '../../../../../../../../utils/schedule';
 
 type Props = {
   teams: ScheduleData['teams'];

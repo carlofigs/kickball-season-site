@@ -1,3 +1,4 @@
+import type { RefObject } from 'react';
 import type { ScheduleData } from '../types/schedule';
 import { AllTeamsScheduleView } from './view/all_teams';
 import { TeamScheduleView } from './view/team';
@@ -8,15 +9,31 @@ type Props = {
   selectedTeam: string | null;
   collapsedByCard: Record<string, boolean>;
   onToggleCard: (cardId: string, defaultCollapsedIfUnset: boolean) => void;
+  teamScheduleExportRef: RefObject<HTMLDivElement | null>;
+  schedulePageLoadedAt: Date;
 };
 
-export function Content({ schedule, teams, selectedTeam, collapsedByCard, onToggleCard }: Props) {
+export function Content({
+  schedule,
+  teams,
+  selectedTeam,
+  collapsedByCard,
+  onToggleCard,
+  teamScheduleExportRef,
+  schedulePageLoadedAt,
+}: Props) {
   const showTeamView = selectedTeam != null;
 
   return (
     <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-4 pb-8" id="game-cards">
       {showTeamView ? (
-        <TeamScheduleView schedule={schedule} teams={teams} selectedTeam={selectedTeam} />
+        <TeamScheduleView
+          schedule={schedule}
+          teams={teams}
+          selectedTeam={selectedTeam}
+          exportContainerRef={teamScheduleExportRef}
+          schedulePageLoadedAt={schedulePageLoadedAt}
+        />
       ) : (
         <AllTeamsScheduleView
           schedule={schedule}

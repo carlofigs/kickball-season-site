@@ -1,7 +1,7 @@
 /** Aligns with `data/schedule.schema.json`. */
 
 /** Display metadata for a colour team (keyed by short name in `teams`). */
-export interface TeamDef {
+interface TeamDef {
   name: string;
   emoji: string;
   /** Primary fill hex (team colour). */
@@ -21,7 +21,7 @@ export interface Fixture {
   lineRefTeams: string[];
 }
 
-export interface MatchBlock {
+interface MatchBlock {
   time: string;
   fixtures: Fixture[];
 }

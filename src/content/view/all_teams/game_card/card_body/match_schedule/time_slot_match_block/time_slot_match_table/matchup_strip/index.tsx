@@ -4,7 +4,7 @@ import {
   hrefForTeamDeepLink,
   teamColor,
   teamPillLabelColor,
-} from '../../../../../../../../../schedule_utils';
+} from '../../../../../../../../../utils/schedule';
 import styles from './index.module.css';
 
 type Props = {

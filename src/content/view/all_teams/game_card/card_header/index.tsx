@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import type { Game } from '../../../../../types/schedule';
-import { formatDate } from '../../../../../schedule_utils';
+import { formatDate } from '../../../../../utils/schedule';
 import { PhotoDayPill } from './photo_day_pill';
 
 type Props = {

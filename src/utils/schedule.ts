@@ -1,6 +1,6 @@
-import type { ScheduleData } from './types/schedule';
+import type { ScheduleData } from '../types/schedule';
 
-export const ALL_TEAMS_PILL_LABEL = '#f1f5f9';
+const ALL_TEAMS_PILL_LABEL = '#f1f5f9';
 
 export function teamColor(teams: ScheduleData['teams'], team: string): string {
   const teamDef = teams[team];
@@ -49,4 +49,13 @@ export function hrefForTeamDeepLink(team: string): string {
   const url = new URL(window.location.href);
   url.searchParams.set('team', team);
   return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Safe filename segment for downloads (ICS, PNG, etc.). */
+export function slugForTeamFilename(team: string): string {
+  return team
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
 }

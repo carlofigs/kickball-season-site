@@ -1,6 +1,5 @@
 import type { Game, ScheduleData } from '../types/schedule';
-import { formatDate } from '../schedule_utils';
-import { mapTeamHexToAppleCalendarColor } from './apple_calendar_color';
+import { formatDate, slugForTeamFilename } from './schedule';
 
 const MATCH_DURATION_MINUTES = 90;
 const DUTY_BLOCK_MINUTES = 60;
@@ -36,18 +35,10 @@ export function downloadTeamScheduleIcs(schedule: ScheduleData, team: string): v
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = `kickball-${slugForFilename(team)}-schedule.ics`;
+  anchor.download = `kickball-${slugForTeamFilename(team)}-schedule.ics`;
   anchor.rel = 'noopener';
   anchor.click();
   URL.revokeObjectURL(url);
-}
-
-function slugForFilename(team: string): string {
-  return team
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '');
 }
 
 function collectTeamCalendarEvents(schedule: ScheduleData, team: string): CalendarEvent[] {
@@ -230,7 +221,6 @@ function buildIcsCalendar(schedule: ScheduleData, team: string, events: Calendar
   const teamDef = schedule.teams[team];
   const calName = teamDef != null ? `${teamDef.emoji} ${team} — Kickball` : `${team} — Kickball`;
   const dtStamp = formatIcsUtc(new Date());
-  const appleColor = teamDef != null ? mapTeamHexToAppleCalendarColor(teamDef.color) : '#8E8E93';
 
   const lines: string[] = [
     'BEGIN:VCALENDAR',
@@ -239,7 +229,6 @@ function buildIcsCalendar(schedule: ScheduleData, team: string, events: Calendar
     'CALSCALE:GREGORIAN',
     `X-WR-CALNAME:${escapeIcsText(calName)}`,
     'METHOD:PUBLISH',
-    `X-APPLE-CALENDAR-COLOR:${appleColor}`,
   ];
 
   for (const event of events) {
@@ -248,7 +237,6 @@ function buildIcsCalendar(schedule: ScheduleData, team: string, events: Calendar
     lines.push(`DTSTAMP:${dtStamp}`);
     lines.push(`DTSTART:${formatIcsLocal(event.start)}`);
     lines.push(`DTEND:${formatIcsLocal(event.end)}`);
-    lines.push(`COLOR:${appleColor}`);
     lines.push(`SUMMARY:${escapeIcsText(event.summary)}`);
     lines.push(`DESCRIPTION:${escapeIcsText(event.description)}`);
     lines.push(`LOCATION:${escapeIcsText(event.location)}`);

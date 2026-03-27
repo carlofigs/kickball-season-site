@@ -1,5 +1,5 @@
 import type { Fixture, Game, PitchField, ScheduleData } from '../../../../types/schedule';
-import { hexToRgb, teamColor, teamPillLabelColor } from '../../../../schedule_utils';
+import { hexToRgb, teamColor, teamPillLabelColor } from '../../../../utils/schedule';
 import { TeamScheduleCardHeader } from './card_header';
 import { TeamScheduleCardTheme } from './card_theme';
 import { TeamScheduleFieldDuties, type LineRefDutySlot } from './field_duties';
@@ -48,6 +48,7 @@ export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
           gameNumber={game.gameNumber}
           date={game.date}
           opponentTeam={opponent}
+          opponentTeamName={teams[opponent].name}
           opponentColor={oppColor}
           opponentLabelColor={oppLabel}
         />

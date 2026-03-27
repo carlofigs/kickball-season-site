@@ -51,3 +51,64 @@ body {
     outline-offset: 8px;
   }
 }
+
+/*
+ * PNG export: media queries use the viewport, so we force the same layout as `lg` (3 columns)
+ * while html-to-image captures the team schedule block.
+ */
+/* Hidden in the live app; shown only while the schedule root has `team-schedule-export-capture`. */
+.team-schedule-export-only {
+  display: none !important;
+}
+
+.team-schedule-export-capture .team-schedule-export-only {
+  display: block !important;
+}
+
+.team-schedule-export-capture.team-schedule-export-root,
+.team-schedule-export-capture.team-schedule-export-root * {
+  transition: none !important;
+}
+
+/*
+ * html-to-image (SVG foreignObject), especially on mobile Safari, often mis-draws box-shadow
+ * (drop + inset) as thick gray vertical bands beside rounded rectangles. Live UI keeps shadows.
+ */
+.team-schedule-export-capture.team-schedule-export-root,
+.team-schedule-export-capture.team-schedule-export-root * {
+  box-shadow: none !important;
+}
+
+/*
+ * PNG: ~1200px content width, plus padding so the image has a margin (matches `toPng` bg).
+ */
+.team-schedule-export-capture.team-schedule-export-root {
+  width: 1248px;
+  min-width: 1248px;
+  max-width: 1248px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: #f8fafc;
+}
+
+/* Deep-link focus ring must not appear in PNG captures (hash links leave the class on the card). */
+.team-schedule-export-capture .deep-link-highlight {
+  animation: none !important;
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+/* Keep the team title on one line in wide export captures (timestamp sits beside it). */
+.team-schedule-export-capture .team-summary-heading {
+  white-space: nowrap;
+}
+
+.team-schedule-export-capture .team-schedule-export-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+/* Opponent long name uses `md:inline` for the live UI; PNG export is wide but the viewport may be
+   narrow — show the same chip text as on desktop whenever we’re capturing. */
+.team-schedule-export-capture .team-schedule-chip-long-name {
+  display: inline !important;
+}
