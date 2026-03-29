@@ -1,12 +1,6 @@
-import { Clock, Crosshair, Droplets, Navigation, Store } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import type { PitchField } from '../../../../../types/schedule';
-
-const FIELD_ICONS: Record<PitchField, typeof Store> = {
-  Kiosk: Store,
-  Road: Navigation,
-  Middle: Crosshair,
-  Water: Droplets,
-};
+import { PitchFieldPill } from '../../../../../shared/pitch_field_pill';
 
 type Props = {
   time: string;
@@ -14,7 +8,6 @@ type Props = {
 };
 
 export function TeamScheduleMatchLine({ time, field }: Props) {
-  const FieldIcon = FIELD_ICONS[field];
   return (
     <div className="shrink-0 px-1">
       <div className="flex items-center gap-3 px-3 py-2">
@@ -22,10 +15,7 @@ export function TeamScheduleMatchLine({ time, field }: Props) {
           <Clock className="size-[13px] shrink-0 text-slate-500" strokeWidth={2} aria-hidden />
           <span>{time}</span>
         </div>
-        <div className="inline-flex items-center gap-[0.3rem] rounded-md bg-slate-200 px-[0.55rem] py-[0.3rem] text-[0.65rem] font-semibold text-slate-600">
-          <FieldIcon className="size-[11px] shrink-0" aria-hidden />
-          <span>{field} Field</span>
-        </div>
+        <PitchFieldPill fieldName={field} />
       </div>
     </div>
   );

@@ -1,40 +1,34 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useRef, type Dispatch, type SetStateAction } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { scrollToTop } from '../utils/scroll';
 import {
   findCardElementForGame,
-  parseGameNumberFromUrl,
-  parseTeamFromUrl,
+  parseGameNumberFromHash,
   scrollAndHighlight,
-  setTeamInUrl,
 } from '../utils/routing';
 
-/**
- * Keeps `selectedTeam` in sync with `?team=`, runs `#game-N` deep links after navigation
- * or when cards expand. Pass a stable `allTeamNames` array (e.g. module-level keys).
- */
-type ScheduleRoutingData = {
+type UseScheduleRoutingResult = {
   selectedTeam: string | null;
-};
-
-type ScheduleRoutingActions = {
   selectTeam: (team: string | null) => void;
 };
 
 export function useScheduleRouting(
   allTeamNames: string[],
   setCollapsedByCard: Dispatch<SetStateAction<Record<string, boolean>>>
-): [ScheduleRoutingData, ScheduleRoutingActions] {
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(() =>
-    parseTeamFromUrl(allTeamNames)
-  );
+): UseScheduleRoutingResult {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTeam = teamFromSearchParams(searchParams, allTeamNames);
+  const location = useLocation();
 
   const runGameDeepLinkRef = useRef<() => void>(() => {});
+  const previousTeamRef = useRef<string | null | undefined>(undefined);
 
   runGameDeepLinkRef.current = () => {
-    const gameNum = parseGameNumberFromUrl();
+    const gameNum = parseGameNumberFromHash(location.hash);
     if (gameNum == null) return;
     const cardElement = findCardElementForGame(gameNum);
     if (cardElement == null) return;
-    const gameId = (cardElement as HTMLElement).dataset.gameId;
+    const { gameId } = cardElement.dataset;
     if (gameId != null) {
       const body = document.getElementById(`card-body-${gameId}`);
       if (body != null && body.dataset.collapsed === 'true') {
@@ -50,42 +44,73 @@ export function useScheduleRouting(
   };
 
   function selectTeam(team: string | null) {
-    setSelectedTeam(team);
-    setTeamInUrl(team);
+    setSearchParams(
+      (previous) => {
+        const next = nextSearchParamsForTeam(previous, team);
+        if (next.toString() === previous.toString()) {
+          return previous;
+        }
+        return next;
+      },
+      { replace: false }
+    );
   }
-
-  useEffect(() => {
-    const onPopState = () => {
-      const next = parseTeamFromUrl(allTeamNames);
-      setSelectedTeam((previousSelection) =>
-        next !== previousSelection ? next : previousSelection
-      );
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => runGameDeepLinkRef.current());
-      });
-    };
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
-  }, [allTeamNames]);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => runGameDeepLinkRef.current());
     });
     return () => cancelAnimationFrame(id);
-  }, [selectedTeam]);
+  }, [selectedTeam, location.pathname, location.search, location.hash]);
 
   useEffect(() => {
-    const onHash = () => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => runGameDeepLinkRef.current());
-      });
-    };
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
+    const previous = previousTeamRef.current;
 
-  const data: ScheduleRoutingData = { selectedTeam };
-  const actions: ScheduleRoutingActions = { selectTeam };
-  return [data, actions];
+    const shouldScrollToTopHome =
+      previous !== undefined && previous != null && selectedTeam == null;
+    if (shouldScrollToTopHome) {
+      const timeoutId = window.setTimeout(() => {
+        scrollToTop();
+      }, 0);
+      previousTeamRef.current = selectedTeam;
+      return () => window.clearTimeout(timeoutId);
+    }
+
+    const shouldScrollToTopTeam =
+      previous !== undefined &&
+      previous === null &&
+      selectedTeam != null;
+    if (shouldScrollToTopTeam) {
+      const timeoutId = window.setTimeout(() => {
+        scrollToTop();
+      }, 0);
+      previousTeamRef.current = selectedTeam;
+      return () => window.clearTimeout(timeoutId);
+    }
+
+    previousTeamRef.current = selectedTeam;
+  }, [selectedTeam]);
+
+  return { selectedTeam, selectTeam };
+}
+
+function nextSearchParamsForTeam(previous: URLSearchParams, team: string | null): URLSearchParams {
+  const next = new URLSearchParams(previous);
+  if (team == null) {
+    next.delete('team');
+  } else {
+    next.set('team', team);
+  }
+  return next;
+}
+
+function teamFromSearchParams(
+  searchParams: URLSearchParams,
+  allTeamNames: string[]
+): string | null {
+  const raw = searchParams.get('team');
+  if (raw == null || raw === '') {
+    return null;
+  }
+  return allTeamNames.includes(raw) ? raw : null;
 }

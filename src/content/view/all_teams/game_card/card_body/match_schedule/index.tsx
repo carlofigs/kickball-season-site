@@ -14,6 +14,7 @@ export function GameCardMatchSchedule({ teams, games }: Props) {
           <TimeSlotMatchBlock
             key={`${game.gameNumber}-${block.time}`}
             teams={teams}
+            game={game}
             time={block.time}
             fixtures={block.fixtures}
           />

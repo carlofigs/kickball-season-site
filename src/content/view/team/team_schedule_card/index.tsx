@@ -1,4 +1,6 @@
+import type { MouseEvent } from 'react';
 import type { Fixture, Game, PitchField, ScheduleData } from '../../../../types/schedule';
+import { useMatchSheet } from '../../../sheet/match_sheet/match_sheet_provider';
 import { hexToRgb, teamColor, teamPillLabelColor } from '../../../../utils/schedule';
 import { TeamScheduleCardHeader } from './card_header';
 import { TeamScheduleCardTheme } from './card_theme';
@@ -19,23 +21,30 @@ type Props = {
 };
 
 export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
+  const { openMatchSheet } = useMatchSheet();
   const teamMatch = findTeamMatchForGame(game, selectedTeam);
   if (teamMatch == null) return null;
 
   const lineRefSlot = findLineRefDutySlotForGame(game, selectedTeam);
 
-  const { fixture } = teamMatch;
+  const { fixture, time: matchSlotTime } = teamMatch;
   const opponent = fixture.home === selectedTeam ? fixture.away : fixture.home;
   const oppColor = teamColor(teams, opponent);
   const oppLabel = teamPillLabelColor(teams, opponent);
 
   const oppRgb = hexToRgb(oppColor);
 
+  function openSheetFromCard(event: MouseEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest('a')) return;
+    openMatchSheet({ game, slotTime: matchSlotTime, fixture });
+  }
+
   return (
     <div
-      className={`${styles.teamScheduleCard} flex h-full min-h-0 flex-col overflow-hidden rounded-[0.875rem] border border-slate-200 border-l-[5px] p-0`}
+      className={`${styles.teamScheduleCard} flex min-h-0 w-full cursor-pointer flex-col overflow-hidden rounded-[0.875rem] border border-slate-200 border-l-[5px] p-0 active:scale-[0.995]`}
       data-card-id={String(game.gameNumber)}
       data-game-id={String(game.gameNumber)}
+      onClick={openSheetFromCard}
       style={{
         borderLeftColor: oppColor,
         ['--opp-r' as string]: String(oppRgb.r),
@@ -58,22 +67,24 @@ export function TeamScheduleCard({ game, teams, selectedTeam }: Props) {
           themeDescription={game.themeDescription}
         />
       </div>
-      <div className="flex min-h-0 flex-1 flex-col p-0">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col p-0">
         <div className="min-h-0 min-w-0 flex-1 shrink" aria-hidden />
-        <TeamScheduleMatchLine time={teamMatch.time} field={teamMatch.field} />
-        <TeamScheduleFieldDuties
-          setupTime={
-            game.fieldSetupTeams.includes(selectedTeam) && game.fieldSetupTime
-              ? game.fieldSetupTime
-              : null
-          }
-          packTime={
-            game.fieldPackDownTeams.includes(selectedTeam) && game.fieldPackDownTime
-              ? game.fieldPackDownTime
-              : null
-          }
-          lineRefSlot={lineRefSlot}
-        />
+        <div className="shrink-0">
+          <TeamScheduleMatchLine time={matchSlotTime} field={fixture.field} />
+          <TeamScheduleFieldDuties
+            setupTime={
+              game.fieldSetupTeams.includes(selectedTeam) && game.fieldSetupTime
+                ? game.fieldSetupTime
+                : null
+            }
+            packTime={
+              game.fieldPackDownTeams.includes(selectedTeam) && game.fieldPackDownTime
+                ? game.fieldPackDownTime
+                : null
+            }
+            lineRefSlot={lineRefSlot}
+          />
+        </div>
       </div>
     </div>
   );

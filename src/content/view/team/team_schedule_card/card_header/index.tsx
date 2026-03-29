@@ -1,4 +1,6 @@
-import { formatDate, hrefForTeamDeepLink } from '../../../../../utils/schedule';
+import { Link } from 'react-router-dom';
+import { useTeamDeepLinkTo } from '../../../../../hooks/use_team_deep_link';
+import { formatDate } from '../../../../../utils/schedule';
 
 type Props = {
   gameNumber: number;
@@ -17,6 +19,7 @@ export function TeamScheduleCardHeader({
   opponentColor,
   opponentLabelColor,
 }: Props) {
+  const teamLink = useTeamDeepLinkTo(opponentTeam);
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
@@ -28,8 +31,9 @@ export function TeamScheduleCardHeader({
         </span>
         <span className="text-[0.7rem] font-semibold text-slate-400">{formatDate(date)}</span>
       </div>
-      <a
-        href={hrefForTeamDeepLink(opponentTeam)}
+      <Link
+        to={teamLink}
+        onClick={(event) => event.stopPropagation()}
         className="inline-flex max-w-[min(100%,20rem)] shrink-0 items-center rounded-full px-[0.65rem] py-[0.35rem] text-[0.65rem] font-bold tracking-wide shadow-sm no-underline transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/55"
         style={{ background: opponentColor, color: opponentLabelColor }}
         aria-label={`View schedule for ${opponentTeam}, ${opponentTeamName}`}
@@ -38,7 +42,7 @@ export function TeamScheduleCardHeader({
           {opponentTeam}
           <span className="team-schedule-chip-long-name hidden font-semibold opacity-90 md:inline">{` · ${opponentTeamName}`}</span>
         </span>
-      </a>
+      </Link>
     </div>
   );
 }

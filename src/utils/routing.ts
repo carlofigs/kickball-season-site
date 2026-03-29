@@ -1,45 +1,26 @@
-/**
- * Builds a shareable URL from the current location: keeps existing query params (e.g. fbclid),
- * clears `#game-*` hash, and sets or removes `team` only.
- */
 export type ShareableScheduleUrlOptions =
   | { mode: 'all-teams' }
   | { mode: 'team'; teamShortName: string };
 
 export function buildShareableScheduleUrl(options: ShareableScheduleUrlOptions): string {
-  const url = new URL(window.location.href);
+  const url = new URL(window.location.pathname, window.location.origin);
   url.hash = '';
-  if (options.mode === 'all-teams') {
-    url.searchParams.delete('team');
-  } else {
+  if (options.mode === 'team') {
     url.searchParams.set('team', options.teamShortName);
   }
   return url.toString();
 }
 
-/** Reads `?team=` from the current URL; returns a valid team name or null. */
-export function parseTeamFromUrl(allTeamNames: string[]): string | null {
-  const params = new URLSearchParams(window.location.search);
-  const raw = params.get('team');
-  if (raw == null || raw === '') return null;
-  return allTeamNames.includes(raw) ? raw : null;
+export function teamDeepLinkTo(location: { pathname: string; hash: string }, team: string): string {
+  const params = new URLSearchParams();
+  params.set('team', team);
+  return `${location.pathname}?${params.toString()}${location.hash}`;
 }
 
-/** Updates `?team=` in the URL without navigation. */
-export function setTeamInUrl(team: string | null): void {
-  const url = new URL(window.location.href);
-  if (team == null) {
-    url.searchParams.delete('team');
-  } else {
-    url.searchParams.set('team', team);
-  }
-  window.history.replaceState({}, '', url.toString());
-}
-
-/** Parses `#game-N` from the hash; returns N or null. */
-export function parseGameNumberFromUrl(): number | null {
-  const hash = window.location.hash.replace(/^#/, '');
-  const match = /^game-(\d+)$/.exec(hash);
+/** Parses `#game-N` (or `game-N`); returns N or null. */
+export function parseGameNumberFromHash(hash: string): number | null {
+  const hashContent = hash.replace(/^#/, '');
+  const match = /^game-(\d+)$/.exec(hashContent);
   if (match == null) return null;
   const num = Number(match[1]);
   return Number.isFinite(num) ? num : null;
@@ -61,7 +42,8 @@ export function findCardElementForGame(gameNumber: number): HTMLElement | null {
 }
 
 export function scrollAndHighlight(element: Element): void {
-  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  element.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
   element.classList.add('deep-link-highlight');
   setTimeout(() => element.classList.remove('deep-link-highlight'), 2600);
 }

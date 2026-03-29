@@ -1,0 +1,148 @@
+.dialog {
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: 0 auto;
+  max-width: min(100vw, 28rem);
+  width: 100%;
+  max-height: min(96vh, 1600px);
+  min-height: min(85vh, 1600px);
+  padding: 0;
+  border: none;
+  border-radius: 1rem 1rem 0 0;
+  background: transparent;
+  box-shadow: 0 -12px 48px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .dialog {
+    max-width: min(100vw, 48rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .dialog {
+    max-width: min(100vw, 56rem);
+  }
+}
+
+.dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open]:not(.dialogExiting) {
+    animation: match-sheet-enter 0.4s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  .dialog[open]:not(.dialogExiting)::backdrop {
+    animation: match-sheet-backdrop-enter 0.35s ease-out both;
+  }
+
+  .dialog.dialogExiting {
+    animation: match-sheet-exit 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .dialog.dialogExiting::backdrop {
+    animation: match-sheet-backdrop-exit 0.3s ease-out forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open]:not(.dialogExiting) {
+    animation: none;
+  }
+
+  .dialog[open]:not(.dialogExiting)::backdrop {
+    animation: none;
+  }
+
+  .dialog.dialogExiting,
+  .dialog.dialogExiting::backdrop {
+    animation: none;
+  }
+}
+
+@keyframes match-sheet-enter {
+  from {
+    transform: translateY(100%);
+    opacity: 0.96;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes match-sheet-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes match-sheet-exit {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(100%);
+    opacity: 0.96;
+  }
+}
+
+@keyframes match-sheet-backdrop-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.sheetInner {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  border-radius: 1rem 1rem 0 0;
+  background: #ffffff;
+}
+
+.closeButton {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.closeButton:focus,
+.closeButton:focus-visible {
+  outline: none;
+}
+
+.matchupPanel {
+  /* Horizontal blend: home → mixed midpoint → away (no diagonal). */
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--sheet-home-bg) 22%, white) 0%,
+    color-mix(in srgb, var(--sheet-home-bg) 22%, white) 28%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--sheet-home-bg) 50%, var(--sheet-away-bg) 50%) 22%,
+        white
+      )
+      50%,
+    color-mix(in srgb, var(--sheet-away-bg) 22%, white) 72%,
+    color-mix(in srgb, var(--sheet-away-bg) 22%, white) 100%
+  );
+}

@@ -1,14 +1,15 @@
 import { Clock } from 'lucide-react';
-import type { Fixture, ScheduleData } from '../../../../../../../types/schedule';
+import type { Fixture, Game, ScheduleData } from '../../../../../../../types/schedule';
 import { TimeSlotMatchTable } from './time_slot_match_table';
 
 type Props = {
   teams: ScheduleData['teams'];
+  game: Game;
   time: string;
   fixtures: Fixture[];
 };
 
-export function TimeSlotMatchBlock({ teams, time, fixtures }: Props) {
+export function TimeSlotMatchBlock({ teams, game, time, fixtures }: Props) {
   if (fixtures.length === 0) return null;
 
   return (
@@ -17,7 +18,7 @@ export function TimeSlotMatchBlock({ teams, time, fixtures }: Props) {
         <Clock className="size-3 shrink-0" aria-hidden />
         {time}
       </div>
-      <TimeSlotMatchTable teams={teams} matchups={fixtures} />
+      <TimeSlotMatchTable teams={teams} game={game} matchups={fixtures} slotTime={time} />
     </div>
   );
 }

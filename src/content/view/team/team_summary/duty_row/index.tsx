@@ -4,24 +4,21 @@ type DutyAccent = 'emerald' | 'amber' | 'indigo';
 
 const ACCENT: Record<
   DutyAccent,
-  { dot: string; iconWrap: string; icon: string; chip: string; chipText: string }
+  { iconWrap: string; icon: string; chip: string; chipText: string }
 > = {
   emerald: {
-    dot: 'bg-emerald-500',
     iconWrap: 'bg-emerald-50',
     icon: 'text-emerald-700',
     chip: 'border-emerald-200/80 bg-emerald-50/80',
     chipText: 'text-emerald-900',
   },
   amber: {
-    dot: 'bg-amber-500',
     iconWrap: 'bg-amber-50',
     icon: 'text-amber-900',
     chip: 'border-amber-200/80 bg-amber-50/80',
     chipText: 'text-amber-950',
   },
   indigo: {
-    dot: 'bg-indigo-500',
     iconWrap: 'bg-indigo-50',
     icon: 'text-indigo-800',
     chip: 'border-indigo-200/80 bg-indigo-50/80',
@@ -41,7 +38,6 @@ export function DutyRow({ title, Icon, accent, gameNumbers }: Props) {
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 py-2 px-2 sm:justify-between sm:gap-x-3 sm:px-2.5">
       <div className="flex min-w-0 items-center gap-2">
-        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${accentClasses.dot}`} aria-hidden />
         <div
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${accentClasses.iconWrap}`}
         >

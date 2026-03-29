@@ -150,12 +150,11 @@ function buildSingleGameEventForTeam(
   };
 }
 
-/** Same pattern as in-app deep links (`App` + `hrefForTeamDeepLink` / hash). */
 function buildGameDeepLinkUrl(team: string, gameNumber: number): string {
   if (typeof window === 'undefined') {
     return '';
   }
-  const url = new URL(window.location.href);
+  const url = new URL(window.location.pathname, window.location.origin);
   url.searchParams.set('team', team);
   url.hash = `game-${gameNumber}`;
   return url.toString();

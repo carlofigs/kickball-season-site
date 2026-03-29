@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function GameCardBody({ teams, games }: Props) {
-  const postPlaySocial = games[0].postPlaySocial;
+  const [{ postPlaySocial }] = games;
 
   return (
     <div className="px-4 pt-3 pb-4">

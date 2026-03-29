@@ -7,11 +7,11 @@ import { Footer } from './footer';
 import { Header } from './header';
 import type { ScheduleData } from './types/schedule';
 import { Content } from './content';
+import { MatchSheetProvider } from './content/sheet/match_sheet/match_sheet_provider';
 import { downloadTeamScheduleIcs } from './utils/calendar';
 import { LoadingOverlay } from './loading_overlay';
 import { useToast } from './shared/toast/toast_provider';
 import { TeamSelector } from './team_selector';
-
 const scheduleData = scheduleJson as ScheduleData;
 
 /** When this bundle ran (page load); schedule JSON is fresh for this moment. */
@@ -22,7 +22,8 @@ const ALL_TEAM_NAMES = Object.keys(scheduleData.teams);
 
 export function App() {
   const [collapsedByCard, setCollapsedByCard] = useState<Record<string, boolean>>({});
-  const [{ selectedTeam }, { selectTeam }] = useScheduleRouting(ALL_TEAM_NAMES, setCollapsedByCard);
+  const { selectedTeam, selectTeam } = useScheduleRouting(ALL_TEAM_NAMES, setCollapsedByCard);
+
   const [
     { teamScheduleExportRef, exportPngPending },
     { onExportTeamSchedulePng: runTeamSchedulePngExport },
@@ -72,15 +73,17 @@ export function App() {
         onExportTeamSchedulePng={onExportTeamSchedulePng}
         exportPngPending={exportPngPending}
       />
-      <Content
-        schedule={scheduleData}
-        teams={scheduleData.teams}
-        selectedTeam={selectedTeam}
-        collapsedByCard={collapsedByCard}
-        onToggleCard={handleToggleCard}
-        teamScheduleExportRef={teamScheduleExportRef}
-        schedulePageLoadedAt={PAGE_LOADED_AT}
-      />
+      <MatchSheetProvider teams={scheduleData.teams} selectedTeam={selectedTeam}>
+        <Content
+          schedule={scheduleData}
+          teams={scheduleData.teams}
+          selectedTeam={selectedTeam}
+          collapsedByCard={collapsedByCard}
+          onToggleCard={handleToggleCard}
+          teamScheduleExportRef={teamScheduleExportRef}
+          schedulePageLoadedAt={PAGE_LOADED_AT}
+        />
+      </MatchSheetProvider>
       <Footer />
       {exportPngPending && selectedTeam != null ? (
         <LoadingOverlay

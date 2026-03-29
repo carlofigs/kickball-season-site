@@ -1,7 +1,8 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Home } from 'lucide-react';
 import type { ScheduleData } from '../types/schedule';
 import { useToast } from '../shared/toast/toast_provider';
 import { buildShareableScheduleUrl } from '../utils/routing';
+import { scrollToTop } from '../utils/scroll';
 import { ScheduleOptionsMenu } from './schedule_options_menu';
 
 type Props = {
@@ -24,6 +25,14 @@ export function TeamSelector({
   const { showToast } = useToast();
   const names = Object.keys(teams);
   const sorted = names.slice().sort();
+
+  function handleHomeClick() {
+    if (selectedTeam != null) {
+      onSelect(null);
+      return;
+    }
+    scrollToTop();
+  }
 
   async function handleCopyShareableUrl() {
     const url = buildShareableScheduleUrl(
@@ -48,13 +57,20 @@ export function TeamSelector({
       }}
     >
       <div className="max-w-7xl mx-auto px-4 py-2.5 md:py-3">
-        <p
-          className="block text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-slate-400 mb-2"
-          id="team-filter-heading"
-        >
-          Filter by team
-        </p>
         <div className="relative flex gap-2 items-stretch">
+          <button
+            type="button"
+            onClick={handleHomeClick}
+            className="flex min-h-[2.75rem] min-w-[2.75rem] shrink-0 cursor-pointer items-center justify-center rounded-lg border bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            style={{ borderColor: 'var(--chrome-border)' }}
+            aria-current={selectedTeam == null ? 'page' : undefined}
+            aria-label={
+              selectedTeam == null ? 'Scroll to top of schedule' : 'Go to all teams schedule'
+            }
+            title={selectedTeam == null ? 'Scroll to top' : 'All teams'}
+          >
+            <Home className="size-5 shrink-0" strokeWidth={2} aria-hidden />
+          </button>
           <div className="relative min-w-0 flex-1">
             <select
               className="w-full min-h-[2.75rem] cursor-pointer appearance-none rounded-lg border bg-white py-2 pl-3 pr-10 text-sm font-semibold shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"

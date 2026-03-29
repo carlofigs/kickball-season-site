@@ -1,6 +1,6 @@
 import { Flag, Package, Wrench, type LucideIcon } from 'lucide-react';
 import type { Game, ScheduleData } from '../../../../../../../types/schedule';
-import { FieldDutyRow } from '../field_duty_row';
+import { FieldDutyRow } from '../../../../../../../shared/field_duty_row';
 
 type Props = {
   teams: ScheduleData['teams'];

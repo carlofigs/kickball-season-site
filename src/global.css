@@ -20,6 +20,8 @@ body {
   --chrome-b: #f8fafc;
   --chrome-c: #f1f5f9;
   --chrome-border: rgba(226, 232, 240, 0.95);
+  /* Sticky team bar + safe area so #game-N deep links don’t sit under the nav. */
+  --game-card-scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 3.75rem);
 }
 
 * {
@@ -27,6 +29,11 @@ body {
     border-color 0.3s,
     background-color 0.3s,
     color 0.3s;
+}
+
+/* Deep-link targets: align to top of viewport, not centered (see scrollAndHighlight). */
+#game-cards [data-game-id] {
+  scroll-margin-top: var(--game-card-scroll-margin-top);
 }
 
 /* Added temporarily by JS when scrolling to a game from the URL hash/query. */

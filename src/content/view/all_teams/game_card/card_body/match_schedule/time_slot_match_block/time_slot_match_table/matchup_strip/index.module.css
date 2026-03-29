@@ -5,8 +5,9 @@
   background: linear-gradient(
     115deg,
     var(--matchup-home-bg) 0%,
-    var(--matchup-home-bg) 48.5%,
-    var(--matchup-away-bg) 51.5%,
+    color-mix(in oklab, var(--matchup-home-bg) 82%, var(--matchup-away-bg) 18%) 38%,
+    color-mix(in oklab, var(--matchup-home-bg) 50%, var(--matchup-away-bg) 50%) 50%,
+    color-mix(in oklab, var(--matchup-home-bg) 18%, var(--matchup-away-bg) 82%) 62%,
     var(--matchup-away-bg) 100%
   );
 }
