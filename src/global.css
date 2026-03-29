@@ -27,6 +27,20 @@ html[data-ios-scroll-lock] nav[aria-label='Team schedule filter'] {
   box-sizing: border-box;
 }
 
+/*
+ * Pinning the nav removes it from flow; without this, `main` jumps up the moment the sheet opens.
+ * Match TeamSelector: py-2.5 + min-h-[2.75rem] (+ border-b) → 4rem; md: py-3 → 4.25rem.
+ */
+html[data-ios-scroll-lock] nav[aria-label='Team schedule filter'] + main {
+  margin-top: calc(4rem + 1px);
+}
+
+@media (min-width: 768px) {
+  html[data-ios-scroll-lock] nav[aria-label='Team schedule filter'] + main {
+    margin-top: calc(4.25rem + 1px);
+  }
+}
+
 :root {
   --accent: #6b7280;
   --accent-light: #f3f4f6;
