@@ -4,11 +4,27 @@
 
 html {
   background-color: var(--chrome-a);
+  scrollbar-gutter: stable;
 }
 
 body {
   font-family: 'DM Sans', sans-serif;
   background-color: var(--chrome-a);
+}
+
+/*
+ * iOS match sheet: scroll lock can break `position: sticky` on the team bar while the sheet
+ * is open. Pin it to the viewport while `data-ios-scroll-lock` is set (see scroll.ts).
+ */
+html[data-ios-scroll-lock] nav[aria-label='Team schedule filter'] {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  z-index: 25;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 :root {

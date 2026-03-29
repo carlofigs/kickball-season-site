@@ -3,6 +3,7 @@ import { Flag, X } from 'lucide-react';
 import type { ScheduleData } from '../../../../types/schedule';
 import { FieldDutyRow } from '../../../../shared/field_duty_row';
 import { PitchFieldPill } from '../../../../shared/pitch_field_pill';
+import { lockBodyScrollBehindModal } from '../../../../utils/scroll';
 import { formatDate, teamColor } from '../../../../utils/schedule';
 import type { MatchSheetPayload } from '../match_sheet_provider';
 import { TeamLine } from './team_line';
@@ -16,8 +17,10 @@ type Props = {
 
 export function MatchSheetDialog({ teams, match, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const sheetInnerRef = useRef<HTMLDivElement>(null);
   const [displayMatch, setDisplayMatch] = useState<MatchSheetPayload | null>(null);
   const [isExiting, setIsExiting] = useState(false);
+  const sheetIsOpen = displayMatch != null;
 
   useLayoutEffect(() => {
     if (match != null) {
@@ -26,17 +29,27 @@ export function MatchSheetDialog({ teams, match, onClose }: Props) {
     }
   }, [match]);
 
+  /* Lock document scroll before paint so `showModal` cannot move the page. */
+  useLayoutEffect(() => {
+    if (!sheetIsOpen) return;
+    return lockBodyScrollBehindModal();
+  }, [sheetIsOpen]);
+
   useEffect(() => {
     if (match == null && displayMatch != null && !isExiting) {
       setIsExiting(true);
     }
   }, [match, displayMatch, isExiting]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (displayMatch == null) return;
     const dialog = dialogRef.current;
     if (dialog == null) return;
     if (!dialog.open) dialog.showModal();
+    const inner = sheetInnerRef.current;
+    if (inner != null) {
+      inner.scrollTop = 0;
+    }
   }, [displayMatch]);
 
   useEffect(() => {
@@ -102,7 +115,7 @@ export function MatchSheetDialog({ teams, match, onClose }: Props) {
         }
       }}
     >
-      <div className={styles.sheetInner}>
+      <div ref={sheetInnerRef} className={styles.sheetInner}>
         <div className="flex items-center justify-between gap-3 px-4 py-4">
           <div className="min-w-0 flex-1">
             <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
