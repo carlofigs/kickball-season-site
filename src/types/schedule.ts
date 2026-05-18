@@ -52,6 +52,10 @@ export interface DbGame {
   scheduled_at: string | null    // ISO timestamptz
   field: string | null           // "Road" | "Middle" | "Kiosk" | "Water"
   line_ref_teams: string[] | null // team_color keys providing line ref
+  field_setup_teams: string[] | null    // game-day level; repeats across all fixtures that day
+  field_packdown_teams: string[] | null // game-day level; repeats across all fixtures that day
+  game_day_theme: string | null
+  game_day_theme_desc: string | null
 }
 
 /**

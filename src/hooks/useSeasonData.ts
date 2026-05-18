@@ -45,9 +45,10 @@ export function useSeasonData(): UseSeasonDataResult {
           .select('season_id, name, year, start_date, end_date, divisions, is_active')
           .eq('is_active', true)
           .limit(1)
-          .single()
+          .maybeSingle()
 
         if (seasonErr) throw new Error(`seasons: ${seasonErr.message}`)
+        if (!seasonRows) throw new Error('seasons: no active season found — set is_active = true on the current season row')
         const season = seasonRows as DbSeason
 
         // Steps 2 & 3 — teams + games in parallel
@@ -58,7 +59,7 @@ export function useSeasonData(): UseSeasonDataResult {
             .eq('season_id', season.season_id),
           supabase!
             .from('games')
-            .select('uuid, context_type, context_id, game_number, team_a, team_b, status, game_day_number, match_time, scheduled_at, field, line_ref_teams')
+            .select('uuid, context_type, context_id, game_number, team_a, team_b, status, game_day_number, match_time, scheduled_at, field, line_ref_teams, field_setup_teams, field_packdown_teams, game_day_theme, game_day_theme_desc')
             .eq('context_type', 'season')
             .eq('context_id', season.season_id)
             .order('game_day_number', { ascending: true })
