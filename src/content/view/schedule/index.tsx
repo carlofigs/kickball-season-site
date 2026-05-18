@@ -13,25 +13,16 @@ const FIELD_ORDER = ['Road', 'Middle', 'Kiosk', 'Water']
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface CalendarGroup {
-  key: string          // "3" or "3-4"
-  label: string        // "Game 3" or "Game 3 & 4"
-  date: string | null  // "YYYY-MM-DD"
+  key: string
+  label: string
+  date: string | null
   dayNumbers: number[]
   games: DbGame[]
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Returns #1e293b or #ffffff depending on background luminance. */
-function contrastColor(hex: string | null): string {
-  if (!hex || hex.length < 7) return '#ffffff'
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55 ? '#1e293b' : '#ffffff'
-}
 
-/** Parse "H:MM AM/PM" → minutes since midnight, NaN on failure. */
 function parseMatchTime(t: string): number {
   const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i)
   if (!m) return NaN
@@ -43,7 +34,6 @@ function parseMatchTime(t: string): number {
   return h * 60 + min
 }
 
-/** Format minutes-since-midnight → "H:MM AM/PM". */
 function fmtMinutes(total: number): string {
   const clamped = ((total % 1440) + 1440) % 1440
   const h24 = Math.floor(clamped / 60)
@@ -53,7 +43,6 @@ function fmtMinutes(total: number): string {
   return `${h12}:${String(m).padStart(2, '0')} ${period}`
 }
 
-/** Format "YYYY-MM-DD" → "15 Mar 2026". */
 function fmtDate(iso: string | null): string {
   if (!iso) return ''
   return new Date(iso + 'T12:00:00').toLocaleDateString('en-AU', {
@@ -61,7 +50,6 @@ function fmtDate(iso: string | null): string {
   })
 }
 
-/** Derive setup/packdown times from the earliest/latest game in a group. */
 function dutyTimes(games: DbGame[]): { setup: string | null; packdown: string | null } {
   const mins = games
     .map(g => g.match_time ? parseMatchTime(g.match_time) : NaN)
@@ -73,90 +61,181 @@ function dutyTimes(games: DbGame[]): { setup: string | null; packdown: string | 
   }
 }
 
-// ─── Team duty chip ───────────────────────────────────────────────────────────
+// ─── Color swatch (duties in All Teams) ──────────────────────────────────────
 
-function DutyChip({ teamColor, teams }: { teamColor: string; teams: SeasonData['teams'] }) {
-  const team = teams[teamColor]
-  const bg = team?.color_hex ?? '#94a3b8'
+function ColorSwatch({ teamColor, teams }: { teamColor: string; teams: SeasonData['teams'] }) {
+  const hex = teams[teamColor]?.color_hex ?? '#94a3b8'
   return (
     <span
-      className="inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[0.6rem] font-bold"
-      style={{ backgroundColor: bg, color: contrastColor(bg) }}
-    >
-      {team?.team_color ?? teamColor}
-    </span>
+      title={teams[teamColor]?.display_name ?? teamColor}
+      className="inline-block size-4 rounded-full ring-1 ring-black/10 shrink-0"
+      style={{ backgroundColor: hex }}
+    />
   )
 }
 
-// ─── Duty row ─────────────────────────────────────────────────────────────────
+// ─── Duties table ─────────────────────────────────────────────────────────────
 
-type DutyRowProps = {
-  Icon: React.ComponentType<{ className?: string }>
-  iconClass: string
-  label: string
-  time: string | null
-  teamColors: string[]
+type DutiesTableProps = {
+  setupTeams: string[]
+  packdownTeams: string[]
+  lineRefByTime: Array<[string, string[]]>
+  setupTime: string | null
+  packdownTime: string | null
   teams: SeasonData['teams']
+  /** When true show color swatches only; when false show names */
+  compact: boolean
 }
 
-function DutyRow({ Icon, iconClass, label, time, teamColors, teams }: DutyRowProps) {
-  if (!teamColors.length) return null
+function DutiesTable({
+  setupTeams, packdownTeams, lineRefByTime,
+  setupTime, packdownTime, teams, compact,
+}: DutiesTableProps) {
+  const hasAny = setupTeams.length > 0 || packdownTeams.length > 0 || lineRefByTime.length > 0
+  if (!hasAny) return null
+
+  function TeamCell({ colors }: { colors: string[] }) {
+    if (!colors.length) return <td className="px-3 py-2 text-xs text-slate-300">—</td>
+    return (
+      <td className="px-3 py-2">
+        {compact ? (
+          <div className="flex flex-wrap gap-1">
+            {colors.map(c => <ColorSwatch key={c} teamColor={c} teams={teams} />)}
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {colors.map(c => {
+              const team = teams[c]
+              const hex = team?.color_hex ?? '#94a3b8'
+              return (
+                <span key={c} className="inline-flex items-center gap-1 text-xs text-slate-600">
+                  <span
+                    className="size-2.5 rounded-full ring-1 ring-black/10 shrink-0"
+                    style={{ backgroundColor: hex }}
+                  />
+                  {team?.display_name ?? c}
+                </span>
+              )
+            })}
+          </div>
+        )}
+      </td>
+    )
+  }
+
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-      <Icon className={`shrink-0 size-3.5 ${iconClass}`} />
-      <span className="shrink-0 font-semibold text-slate-600">{label}</span>
-      {time && <span className="shrink-0 text-slate-400">{time}</span>}
-      <div className="flex flex-wrap gap-1">
-        {teamColors.map(c => <DutyChip key={c} teamColor={c} teams={teams} />)}
+    <div>
+      <p className="mb-1.5 text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
+        Team Duties
+      </p>
+      <div className="overflow-hidden rounded-lg border border-slate-100">
+        <table className="w-full text-xs border-collapse">
+          <thead>
+            <tr className="border-b border-slate-100 bg-slate-50/80">
+              <th className="px-3 py-2 text-left text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
+                Duty
+              </th>
+              <th className="px-3 py-2 text-left text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
+                Time
+              </th>
+              <th className="px-3 py-2 text-left text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
+                Teams
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {setupTeams.length > 0 && (
+              <tr className="border-b border-slate-100 last:border-0">
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <span className="flex items-center gap-1.5 font-semibold text-slate-600">
+                    <Wrench className="size-3 text-green-500" /> Setup
+                  </span>
+                </td>
+                <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">
+                  {setupTime ?? '—'}
+                </td>
+                <TeamCell colors={setupTeams} />
+              </tr>
+            )}
+            {packdownTeams.length > 0 && (
+              <tr className="border-b border-slate-100 last:border-0">
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <span className="flex items-center gap-1.5 font-semibold text-slate-600">
+                    <Package className="size-3 text-amber-500" /> Pack Down
+                  </span>
+                </td>
+                <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">
+                  {packdownTime ?? '—'}
+                </td>
+                <TeamCell colors={packdownTeams} />
+              </tr>
+            )}
+            {lineRefByTime.map(([time, colors]) => (
+              <tr key={time} className="border-b border-slate-100 last:border-0">
+                <td className="px-3 py-2 whitespace-nowrap">
+                  <span className="flex items-center gap-1.5 font-semibold text-slate-600">
+                    <Flag className="size-3 text-slate-400" /> Line Ref
+                  </span>
+                </td>
+                <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">{time}</td>
+                <TeamCell colors={colors} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )
 }
 
-// ─── Gradient matchup bar ─────────────────────────────────────────────────────
+// ─── Timetable game cell (All Teams) ─────────────────────────────────────────
 
-function MatchupBar({
+function TimetableCell({
   game, teams, scores,
 }: {
   game: DbGame
   teams: SeasonData['teams']
   scores: SeasonData['scores']
 }) {
-  const tA = game.team_a ? teams[game.team_a] : null
-  const tB = game.team_b ? teams[game.team_b] : null
   const score = scores[game.uuid]
   const hasScore = score && score.score_a != null && score.score_b != null
   const aWon = hasScore && score.score_a! > score.score_b!
   const bWon = hasScore && score.score_b! > score.score_a!
-  const cA = tA?.color_hex ?? '#94a3b8'
-  const cB = tB?.color_hex ?? '#64748b'
+  const tA = game.team_a ? teams[game.team_a] : null
+  const tB = game.team_b ? teams[game.team_b] : null
 
   return (
-    <div className="flex h-9 w-full overflow-hidden rounded-lg text-xs font-semibold">
+    <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs h-full">
       {/* Team A */}
-      <div
-        className="flex flex-1 items-center truncate px-3"
-        style={{ backgroundColor: cA, color: contrastColor(cA) }}
-      >
-        <span className={`truncate ${aWon ? 'font-extrabold' : ''}`}>
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span
+          className="size-2 shrink-0 rounded-full ring-1 ring-black/10"
+          style={{ backgroundColor: tA?.color_hex ?? '#94a3b8' }}
+        />
+        <span className={`truncate leading-tight ${aWon ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
           {tA?.display_name ?? game.team_a ?? '—'}
         </span>
+        {hasScore && (
+          <span className={`ml-auto shrink-0 tabular-nums ${aWon ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
+            {score.score_a}
+          </span>
+        )}
       </div>
-      {/* Score / VS */}
-      <div
-        className="flex shrink-0 items-center px-2 font-bold text-white text-[0.65rem]"
-        style={{ backgroundColor: 'rgba(0,0,0,0.28)' }}
-      >
-        {hasScore ? `${score.score_a} – ${score.score_b}` : 'vs'}
-      </div>
+      <div className="my-1 border-t border-slate-100" />
       {/* Team B */}
-      <div
-        className="flex flex-1 items-center justify-end truncate px-3"
-        style={{ backgroundColor: cB, color: contrastColor(cB) }}
-      >
-        <span className={`truncate text-right ${bWon ? 'font-extrabold' : ''}`}>
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span
+          className="size-2 shrink-0 rounded-full ring-1 ring-black/10"
+          style={{ backgroundColor: tB?.color_hex ?? '#94a3b8' }}
+        />
+        <span className={`truncate leading-tight ${bWon ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
           {tB?.display_name ?? game.team_b ?? '—'}
         </span>
+        {hasScore && (
+          <span className={`ml-auto shrink-0 tabular-nums ${bWon ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
+            {score.score_b}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -173,24 +252,19 @@ function GameDayAccordion({
   isOpen: boolean
   onToggle: () => void
 }) {
-  // Derive duties
   const setupTeams = useMemo(() => {
     const seen = new Set<string>()
-    for (const g of group.games) {
-      for (const c of g.field_setup_teams ?? []) seen.add(c)
-    }
+    for (const g of group.games) for (const c of g.field_setup_teams ?? []) seen.add(c)
     return [...seen]
   }, [group.games])
 
   const packdownTeams = useMemo(() => {
     const seen = new Set<string>()
-    for (const g of group.games) {
-      for (const c of g.field_packdown_teams ?? []) seen.add(c)
-    }
+    for (const g of group.games) for (const c of g.field_packdown_teams ?? []) seen.add(c)
     return [...seen]
   }, [group.games])
 
-  const lineRefByTime = useMemo(() => {
+  const lineRefByTime = useMemo((): Array<[string, string[]]> => {
     const map = new Map<string, string[]>()
     for (const g of group.games) {
       if (!g.line_ref_teams?.length || !g.match_time) continue
@@ -201,19 +275,13 @@ function GameDayAccordion({
   }, [group.games])
 
   const { setup: setupTime, packdown: packdownTime } = useMemo(
-    () => dutyTimes(group.games),
-    [group.games],
+    () => dutyTimes(group.games), [group.games],
   )
 
-  // Time-grouped matchups
-  const timeslots = useMemo(() => {
-    const map = new Map<string, Map<string, DbGame>>()
-    for (const g of group.games) {
-      if (!g.match_time || !g.field) continue
-      if (!map.has(g.match_time)) map.set(g.match_time, new Map())
-      map.get(g.match_time)!.set(g.field, g)
-    }
-    return [...map.entries()].sort(([a], [b]) => parseMatchTime(a) - parseMatchTime(b))
+  // Time rows × field columns
+  const timeSlots = useMemo(() => {
+    const times = [...new Set(group.games.map(g => g.match_time).filter(Boolean))] as string[]
+    return times.sort((a, b) => parseMatchTime(a) - parseMatchTime(b))
   }, [group.games])
 
   const fieldsPresent = useMemo(() => {
@@ -221,10 +289,20 @@ function GameDayAccordion({
     return FIELD_ORDER.filter(f => present.has(f))
   }, [group.games])
 
+  // Lookup: time → field → game
+  const grid = useMemo(() => {
+    const map = new Map<string, Map<string, DbGame>>()
+    for (const g of group.games) {
+      if (!g.match_time || !g.field) continue
+      if (!map.has(g.match_time)) map.set(g.match_time, new Map())
+      map.get(g.match_time)!.set(g.field, g)
+    }
+    return map
+  }, [group.games])
+
   const meta = group.games[0]
   const theme = meta?.game_day_theme ?? null
   const themeDesc = meta?.game_day_theme_desc ?? null
-  const hasDuties = setupTeams.length > 0 || packdownTeams.length > 0 || lineRefByTime.length > 0
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
@@ -255,78 +333,58 @@ function GameDayAccordion({
       {/* Body */}
       {isOpen && (
         <div className="border-t border-slate-100 px-4 pb-4 pt-3 space-y-4">
-          {/* Theme description */}
           {themeDesc && (
             <p className="text-xs text-slate-400 italic">{themeDesc}</p>
           )}
 
-          {/* Team duties */}
-          {hasDuties && (
-            <div className="space-y-2">
-              <p className="text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
-                Team Duties
-              </p>
-              <DutyRow
-                Icon={Wrench}
-                iconClass="text-green-500"
-                label="Field Setup"
-                time={setupTime}
-                teamColors={setupTeams}
-                teams={teams}
-              />
-              <DutyRow
-                Icon={Package}
-                iconClass="text-amber-500"
-                label="Pack Down"
-                time={packdownTime}
-                teamColors={packdownTeams}
-                teams={teams}
-              />
-              {lineRefByTime.map(([time, colors]) => (
-                <DutyRow
-                  key={time}
-                  Icon={Flag}
-                  iconClass="text-slate-400"
-                  label="Line Ref"
-                  time={time}
-                  teamColors={colors}
-                  teams={teams}
-                />
-              ))}
-            </div>
-          )}
+          <DutiesTable
+            setupTeams={setupTeams}
+            packdownTeams={packdownTeams}
+            lineRefByTime={lineRefByTime}
+            setupTime={setupTime}
+            packdownTime={packdownTime}
+            teams={teams}
+            compact={true}
+          />
 
-          {/* Timetable */}
-          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 space-y-4">
-            {timeslots.map(([time, fieldMap]) => (
-              <div key={time}>
-                {/* Time header */}
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Clock className="size-3.5 text-slate-400" />
-                  <span className="text-xs font-semibold text-slate-500">{time}</span>
-                </div>
-                {/* Field rows */}
-                <div className="space-y-1.5">
-                  {fieldsPresent.map(field => {
-                    const game = fieldMap.get(field)
-                    if (!game) return null
-                    return (
-                      <div key={field} className="flex items-center gap-2 min-w-[380px] sm:min-w-0">
-                        <div className="flex items-center gap-1 w-20 shrink-0">
-                          <MapPin className="size-3 text-slate-300" />
-                          <span className="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wide">
-                            {field}
-                          </span>
-                        </div>
-                        <div className="flex-1">
-                          <MatchupBar game={game} teams={teams} scores={scores} />
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
+          {/* Timetable: time rows × field columns */}
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full min-w-[420px] border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-slate-100">
+                  <th className="pb-2 pr-3 text-right text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 w-20">
+                    <span className="flex items-center justify-end gap-1">
+                      <Clock className="size-3" /> Time
+                    </span>
+                  </th>
+                  {fieldsPresent.map(f => (
+                    <th key={f} className="pb-2 px-1.5 text-center text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
+                      {f}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {timeSlots.map(time => (
+                  <tr key={time} className="align-top">
+                    <td className="pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
+                      {time}
+                    </td>
+                    {fieldsPresent.map(field => {
+                      const game = grid.get(time)?.get(field)
+                      return (
+                        <td key={field} className="px-1.5 pt-1.5 pb-2">
+                          {game
+                            ? <TimetableCell game={game} teams={teams} scores={scores} />
+                            : null
+                          }
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -334,7 +392,7 @@ function GameDayAccordion({
   )
 }
 
-// ─── Team view — YOUR TEAM summary + game cards ───────────────────────────────
+// ─── Team game card (Selected Team view) ─────────────────────────────────────
 
 function TeamGameCard({
   game, teamColor, teams, scores,
@@ -348,9 +406,9 @@ function TeamGameCard({
   const opponentColor = isTeamA ? game.team_b : game.team_a
   const opponent = opponentColor ? teams[opponentColor] : null
   const oppHex = opponent?.color_hex ?? '#94a3b8'
+
   const score = scores[game.uuid]
   const hasScore = score && score.score_a != null && score.score_b != null
-
   const myScore = hasScore ? (isTeamA ? score.score_a : score.score_b) : null
   const theirScore = hasScore ? (isTeamA ? score.score_b : score.score_a) : null
   const iWon = myScore !== null && theirScore !== null && myScore > theirScore!
@@ -359,27 +417,24 @@ function TeamGameCard({
   const isOnSetup = game.field_setup_teams?.includes(teamColor) ?? false
   const isOnPackdown = game.field_packdown_teams?.includes(teamColor) ?? false
   const isOnLineRef = game.line_ref_teams?.includes(teamColor) ?? false
-
   const { setup: setupTime, packdown: packdownTime } = dutyTimes([game])
-
-  const gameDate = game.scheduled_at?.substring(0, 10) ?? null
 
   return (
     <div
       className="rounded-xl border bg-white overflow-hidden shadow-[0_1px_3px_rgba(15,23,42,0.06)]"
       style={{ borderColor: `${oppHex}40` }}
     >
-      {/* Color accent bar */}
       <div className="h-1" style={{ backgroundColor: oppHex }} />
-
       <div className="p-4 space-y-3">
         {/* Header */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-bold text-slate-700">
             Game Day {game.game_day_number}
           </span>
-          {gameDate && (
-            <span className="text-xs text-slate-400">{fmtDate(gameDate)}</span>
+          {game.scheduled_at && (
+            <span className="text-xs text-slate-400">
+              {fmtDate(game.scheduled_at.substring(0, 10))}
+            </span>
           )}
           {opponent && (
             <span
@@ -420,7 +475,7 @@ function TeamGameCard({
               {myScore} – {theirScore}
               {iWon && <span className="ml-1 text-[0.6rem] font-semibold text-green-500">W</span>}
               {theyWon && <span className="ml-1 text-[0.6rem] font-semibold text-red-400">L</span>}
-              {!iWon && !theyWon && hasScore && <span className="ml-1 text-[0.6rem] font-semibold text-slate-400">D</span>}
+              {!iWon && !theyWon && <span className="ml-1 text-[0.6rem] font-semibold text-slate-400">D</span>}
             </span>
           )}
         </div>
@@ -430,17 +485,18 @@ function TeamGameCard({
           <div className="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100">
             {isOnSetup && (
               <span className="flex items-center gap-1 rounded-full bg-green-50 border border-green-100 px-2 py-0.5 text-[0.65rem] font-semibold text-green-700">
-                <Wrench className="size-2.5" /> Field Setup {setupTime ? `· ${setupTime}` : ''}
+                <Wrench className="size-2.5" /> Field Setup{setupTime ? ` · ${setupTime}` : ''}
               </span>
             )}
             {isOnPackdown && (
               <span className="flex items-center gap-1 rounded-full bg-amber-50 border border-amber-100 px-2 py-0.5 text-[0.65rem] font-semibold text-amber-700">
-                <Package className="size-2.5" /> Pack Down {packdownTime ? `· ${packdownTime}` : ''}
+                <Package className="size-2.5" /> Pack Down{packdownTime ? ` · ${packdownTime}` : ''}
               </span>
             )}
             {isOnLineRef && (
               <span className="flex items-center gap-1 rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[0.65rem] font-semibold text-slate-600">
-                <Flag className="size-2.5" /> Line Ref · {game.match_time}
+                <Flag className="size-2.5" /> Line Ref
+                {game.match_time ? ` · ${game.match_time}` : ''}
                 {game.field ? ` · ${game.field}` : ''}
               </span>
             )}
@@ -450,6 +506,8 @@ function TeamGameCard({
     </div>
   )
 }
+
+// ─── Team view ────────────────────────────────────────────────────────────────
 
 function TeamView({
   teamColor, gameDays, teams, scores,
@@ -462,22 +520,12 @@ function TeamView({
   const team = teams[teamColor]
   const hex = team?.color_hex ?? '#94a3b8'
 
-  // Duty summary: which game days
-  const setupDays = gameDays
-    .filter(([, games]) => games.some(g => g.field_setup_teams?.includes(teamColor)))
-    .map(([n]) => n)
-  const packdownDays = gameDays
-    .filter(([, games]) => games.some(g => g.field_packdown_teams?.includes(teamColor)))
-    .map(([n]) => n)
-  const lineRefDays = gameDays
-    .filter(([, games]) => games.some(g => g.line_ref_teams?.includes(teamColor)))
-    .map(([n]) => n)
+  const setupDays = gameDays.filter(([, gs]) => gs.some(g => g.field_setup_teams?.includes(teamColor))).map(([n]) => n)
+  const packdownDays = gameDays.filter(([, gs]) => gs.some(g => g.field_packdown_teams?.includes(teamColor))).map(([n]) => n)
+  const lineRefDays = gameDays.filter(([, gs]) => gs.some(g => g.line_ref_teams?.includes(teamColor))).map(([n]) => n)
 
-  // My games
   const myGames = useMemo(() =>
-    gameDays.flatMap(([, games]) =>
-      games.filter(g => g.team_a === teamColor || g.team_b === teamColor)
-    ),
+    gameDays.flatMap(([, gs]) => gs.filter(g => g.team_a === teamColor || g.team_b === teamColor)),
     [gameDays, teamColor],
   )
 
@@ -496,7 +544,6 @@ function TeamView({
         className="rounded-xl border overflow-hidden bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06)]"
         style={{ borderColor: `${hex}40` }}
       >
-        {/* Color bar */}
         <div className="h-1.5" style={{ backgroundColor: hex }} />
         <div className="p-4 space-y-3">
           <p className="text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">Your Team</p>
@@ -505,7 +552,6 @@ function TeamView({
             {team?.display_name ?? teamColor}
           </p>
 
-          {/* Duties summary */}
           {(setupDays.length > 0 || packdownDays.length > 0 || lineRefDays.length > 0) && (
             <div className="space-y-2 pt-1 border-t border-slate-100">
               {setupDays.length > 0 && (
@@ -537,13 +583,7 @@ function TeamView({
       {/* Game cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {myGames.map(game => (
-          <TeamGameCard
-            key={game.uuid}
-            game={game}
-            teamColor={teamColor}
-            teams={teams}
-            scores={scores}
-          />
+          <TeamGameCard key={game.uuid} game={game} teamColor={teamColor} teams={teams} scores={scores} />
         ))}
       </div>
     </div>
@@ -557,7 +597,6 @@ export function ScheduleView({ data }: Props) {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null)
   const [openDays, setOpenDays] = useState<Set<string>>(new Set())
 
-  // Individual game days sorted
   const gameDays = useMemo((): Array<[number, DbGame[]]> => {
     const map = new Map<number, DbGame[]>()
     for (const g of games) {
@@ -569,31 +608,23 @@ export function ScheduleView({ data }: Props) {
     return [...map.entries()].sort(([a], [b]) => a - b)
   }, [games])
 
-  // Calendar groups — consecutive game days sharing the same date are merged
   const calendarGroups = useMemo((): CalendarGroup[] => {
     const groups: CalendarGroup[] = []
     for (const [dayNum, dayGames] of gameDays) {
       const date = dayGames[0]?.scheduled_at?.substring(0, 10) ?? null
       const last = groups[groups.length - 1]
       if (last && date && last.date === date) {
-        last.label = last.label.replace('Game ', 'Game ') + ` & ${dayNum}`
+        last.label += ` & ${dayNum}`
         last.key += `-${dayNum}`
         last.dayNumbers.push(dayNum)
         last.games.push(...dayGames)
       } else {
-        groups.push({
-          key: String(dayNum),
-          label: `Game ${dayNum}`,
-          date,
-          dayNumbers: [dayNum],
-          games: [...dayGames],
-        })
+        groups.push({ key: String(dayNum), label: `Game ${dayNum}`, date, dayNumbers: [dayNum], games: [...dayGames] })
       }
     }
     return groups
   }, [gameDays])
 
-  // Sorted team list for dropdown
   const teamList = useMemo(() => {
     const divOrder: Record<string, number> = { Div1: 0, Div2: 1, Guardian: 2 }
     return Object.values(teams).sort((a, b) => {
@@ -612,14 +643,12 @@ export function ScheduleView({ data }: Props) {
   }
 
   if (gameDays.length === 0) {
-    return (
-      <p className="py-12 text-center text-sm text-slate-400">No games scheduled yet.</p>
-    )
+    return <p className="py-12 text-center text-sm text-slate-400">No games scheduled yet.</p>
   }
 
   return (
     <div className="space-y-6">
-      {/* Team filter dropdown */}
+      {/* Team filter */}
       <div className="flex items-center gap-3">
         <label htmlFor="team-filter" className="shrink-0 text-xs font-semibold text-slate-500">
           Filter by team
@@ -639,7 +668,6 @@ export function ScheduleView({ data }: Props) {
         </select>
       </div>
 
-      {/* Views */}
       {selectedTeam === null ? (
         <div className="space-y-3">
           {calendarGroups.map(group => (
@@ -654,12 +682,7 @@ export function ScheduleView({ data }: Props) {
           ))}
         </div>
       ) : (
-        <TeamView
-          teamColor={selectedTeam}
-          gameDays={gameDays}
-          teams={teams}
-          scores={scores}
-        />
+        <TeamView teamColor={selectedTeam} gameDays={gameDays} teams={teams} scores={scores} />
       )}
     </div>
   )
