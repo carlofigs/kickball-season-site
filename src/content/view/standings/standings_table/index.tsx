@@ -27,9 +27,6 @@ export function StandingsTable({ rows }: Props) {
               Team
             </th>
             <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
-              P
-            </th>
-            <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
               W
             </th>
             <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
@@ -77,11 +74,6 @@ export function StandingsTable({ rows }: Props) {
                       {row.displayName}
                     </span>
                   </div>
-                </td>
-
-                {/* Played */}
-                <td className="px-2 py-2.5 text-center tabular-nums text-slate-600">
-                  {row.played}
                 </td>
 
                 {/* Won */}

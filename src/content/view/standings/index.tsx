@@ -64,7 +64,7 @@ export function StandingsView({ data }: Props) {
 
       {/* Legend */}
       <p className="text-[0.7rem] text-slate-400 text-right">
-        P = Played · W = Won · D = Drawn · L = Lost · RS = Runs Scored
+        W = Won · D = Drawn · L = Lost · RS = Runs Scored
       </p>
     </div>
   )
