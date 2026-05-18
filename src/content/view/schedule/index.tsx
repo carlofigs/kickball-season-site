@@ -326,17 +326,17 @@ function GameDayAccordion({
           />
 
           {/* Timetable: time rows × field columns */}
-          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-            <table className="w-full min-w-[420px] border-collapse text-xs">
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <table className="border-collapse text-xs" style={{ minWidth: 'max-content', width: '100%' }}>
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="pb-2 pr-3 text-right text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 w-20">
+                  <th className="sticky left-0 z-10 bg-white pb-2 pl-4 pr-3 text-right text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 w-[4.5rem]">
                     <span className="flex items-center justify-end gap-1">
                       <Clock className="size-3" /> Time
                     </span>
                   </th>
                   {fieldsPresent.map(f => (
-                    <th key={f} className="pb-2 px-1.5 text-center text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
+                    <th key={f} className="pb-2 px-1.5 pr-4 sm:pr-1.5 text-center text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 min-w-[9rem]">
                       {f}
                     </th>
                   ))}
@@ -345,13 +345,14 @@ function GameDayAccordion({
               <tbody>
                 {timeSlots.map(time => (
                   <tr key={time} className="align-top">
-                    <td className="pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
+                    <td className="sticky left-0 z-10 bg-white pl-4 pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
                       {time}
                     </td>
-                    {fieldsPresent.map(field => {
+                    {fieldsPresent.map((field, i) => {
                       const game = grid.get(time)?.get(field)
+                      const isLast = i === fieldsPresent.length - 1
                       return (
-                        <td key={field} className="px-1.5 pt-1.5 pb-2">
+                        <td key={field} className={`px-1.5 pt-1.5 pb-2 ${isLast ? 'pr-4 sm:pr-1.5' : ''}`}>
                           {game
                             ? <TimetableCell game={game} teams={teams} scores={scores} />
                             : null
@@ -414,12 +415,14 @@ function TeamGameCard({
               {fmtDate(game.scheduled_at.substring(0, 10))}
             </span>
           )}
-          {opponent && (
+          {opponentColor && (
             <span
-              className="ml-auto rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold truncate max-w-[140px]"
+              className="ml-auto rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold truncate max-w-[180px]"
               style={{ backgroundColor: `${oppHex}22`, color: oppHex }}
             >
-              {opponent.display_name ?? opponentColor}
+              {opponent?.display_name
+                ? `${opponentColor} · ${opponent.display_name}`
+                : opponentColor}
             </span>
           )}
         </div>

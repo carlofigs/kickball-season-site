@@ -32,10 +32,10 @@ export function StandingsTable({ rows }: Props) {
             <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
               W
             </th>
-            <th className="hidden px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400 sm:table-cell">
+            <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
               D
             </th>
-            <th className="hidden px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400 sm:table-cell">
+            <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
               L
             </th>
             <th className="px-3 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
@@ -89,13 +89,13 @@ export function StandingsTable({ rows }: Props) {
                   {row.won}
                 </td>
 
-                {/* Drawn — hidden on mobile */}
-                <td className="hidden px-2 py-2.5 text-center tabular-nums text-slate-500 sm:table-cell">
+                {/* Drawn */}
+                <td className="px-2 py-2.5 text-center tabular-nums text-slate-500">
                   {row.drawn}
                 </td>
 
-                {/* Lost — hidden on mobile */}
-                <td className="hidden px-2 py-2.5 text-center tabular-nums text-slate-500 sm:table-cell">
+                {/* Lost */}
+                <td className="px-2 py-2.5 text-center tabular-nums text-slate-500">
                   {row.lost}
                 </td>
 
