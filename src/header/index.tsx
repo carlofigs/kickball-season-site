@@ -23,13 +23,7 @@ export function Header() {
           Sydney Summer 2026
         </p>
         <h1 className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:col-start-2 sm:row-start-2 md:text-3xl md:gap-x-3.5">
-          <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-            <span className="text-slate-900">Kickball</span>
-            <span className="font-bold text-slate-900/38 select-none" aria-hidden="true">
-              ·
-            </span>
-            <span className="font-extrabold text-slate-900">Schedule</span>
-          </span>
+          <span className="text-slate-900">Kickball</span>
           <span className="inline-flex shrink-0 items-center rounded-full border border-slate-900/12 bg-white px-[0.65rem] py-[0.28rem] text-[0.625rem] font-bold uppercase tracking-[0.1em] text-slate-900 shadow-sm">
             Season 17
           </span>

@@ -40,7 +40,7 @@ export interface DbSeasonTeam {
  * public.games row — season rows only (context_type = 'season').
  */
 export interface DbGame {
-  id: string                     // uuid — FK target for game_scores.game_uuid
+  uuid: string                   // games.uuid (renamed from id) — FK target for game_scores.game_uuid
   context_type: 'season'
   context_id: string             // season_id
   game_number: number
@@ -98,3 +98,13 @@ export interface StandingsRow {
 // ─── Utility ──────────────────────────────────────────────────────────────────
 
 export type PitchField = 'Road' | 'Middle' | 'Kiosk' | 'Water'
+
+// ─── Backward-compat stubs ────────────────────────────────────────────────────
+// These satisfy old view component imports until GLINDA-02/03 rewrites them.
+// Do not use in new code.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ScheduleData = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Game = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Fixture = any

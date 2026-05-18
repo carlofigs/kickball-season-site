@@ -58,7 +58,7 @@ export function useSeasonData(): UseSeasonDataResult {
             .eq('season_id', season.season_id),
           supabase!
             .from('games')
-            .select('id, context_type, context_id, game_number, team_a, team_b, status, game_day_number, match_time, scheduled_at, field, line_ref_teams')
+            .select('uuid, context_type, context_id, game_number, team_a, team_b, status, game_day_number, match_time, scheduled_at, field, line_ref_teams')
             .eq('context_type', 'season')
             .eq('context_id', season.season_id)
             .order('game_day_number', { ascending: true })
@@ -72,7 +72,7 @@ export function useSeasonData(): UseSeasonDataResult {
         const gameRows = (gamesResult.data ?? []) as DbGame[]
 
         // Step 4 — scores (by game uuid list; empty list = no scores yet)
-        const gameIds = gameRows.map((g) => g.id)
+        const gameIds = gameRows.map((g) => g.uuid)
         let scoreRows: DbGameScore[] = []
 
         if (gameIds.length > 0) {
