@@ -319,7 +319,7 @@ function GameDayAccordion({
           {/* Timetable: time rows × field columns */}
           <div>
           <p className="mb-2 text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
-            Fixtures
+            Timetable
           </p>
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="border-collapse text-xs" style={{ minWidth: 'max-content', width: '100%' }}>
