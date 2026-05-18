@@ -1,5 +1,9 @@
 # Build with Vite and deploy `dist/` to GitHub Pages.
 # After merging, enable Pages: Settings → Pages → Build and deployment → Source: GitHub Actions.
+#
+# Required GitHub Actions secrets (Settings → Secrets → Actions):
+#   VITE_SUPABASE_URL
+#   VITE_SUPABASE_PUBLISHABLE_KEY
 
 name: Deploy GitHub Pages
 
@@ -32,9 +36,11 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run validate:schedule
       - run: pnpm run typecheck
       - run: pnpm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

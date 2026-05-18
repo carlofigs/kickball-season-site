@@ -1,96 +1,47 @@
-import { useState } from 'react';
-import { useDocumentTheme } from './hooks/use_document_theme';
-import { useScheduleRouting } from './hooks/use_schedule_routing';
-import { useTeamSchedulePngExport } from './hooks/use_team_schedule_png_export';
-import scheduleJson from '../data/schedule.json';
-import { Footer } from './footer';
-import { Header } from './header';
-import type { ScheduleData } from './types/schedule';
-import { Content } from './content';
-import { MatchSheetProvider } from './content/sheet/match_sheet/match_sheet_provider';
-import { downloadTeamScheduleIcs } from './utils/calendar';
-import { LoadingOverlay } from './loading_overlay';
-import { useToast } from './shared/toast/toast_provider';
-import { TeamSelector } from './team_selector';
-const scheduleData = scheduleJson as ScheduleData;
+import { useSeasonData } from './hooks/useSeasonData'
 
-/** When this bundle ran (page load); schedule JSON is fresh for this moment. */
-const PAGE_LOADED_AT = new Date();
-
-/** Stable list for URL parsing — avoids recreating `Object.keys` each render. */
-const ALL_TEAM_NAMES = Object.keys(scheduleData.teams);
-
+/**
+ * GLINDA — App root.
+ *
+ * Data is fetched from Supabase via useSeasonData(). The schedule and
+ * standings views (GLINDA-02 / GLINDA-03) are built in subsequent tasks.
+ *
+ * TODO GLINDA-02: replace loading/error/placeholder with standings + schedule UI.
+ */
 export function App() {
-  const [collapsedByCard, setCollapsedByCard] = useState<Record<string, boolean>>({});
-  const { selectedTeam, selectTeam } = useScheduleRouting(ALL_TEAM_NAMES, setCollapsedByCard);
+  const { data, loading, error } = useSeasonData()
 
-  const [
-    { teamScheduleExportRef, exportPngPending },
-    { onExportTeamSchedulePng: runTeamSchedulePngExport },
-  ] = useTeamSchedulePngExport(selectedTeam, scheduleData.teams);
-  const { showToast } = useToast();
-
-  useDocumentTheme(selectedTeam, scheduleData.teams);
-
-  async function onExportTeamSchedulePng() {
-    const exported = await runTeamSchedulePngExport();
-    if (exported) {
-      showToast('Schedule exported as PNG');
-    }
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-slate-500 text-sm">Loading season data…</p>
+      </div>
+    )
   }
 
-  function handleToggleCard(cardId: string, defaultCollapsedIfUnset: boolean) {
-    setCollapsedByCard((previous) => {
-      const currentCollapsed =
-        previous[cardId] !== undefined ? previous[cardId] : defaultCollapsedIfUnset;
-      return { ...previous, [cardId]: !currentCollapsed };
-    });
+  if (error || !data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center space-y-2">
+          <p className="text-red-600 font-medium text-sm">Failed to load season data</p>
+          {error && <p className="text-slate-500 text-xs font-mono">{error}</p>}
+        </div>
+      </div>
+    )
   }
 
-  function handleAddTeamCalendar() {
-    if (selectedTeam == null) return;
-    downloadTeamScheduleIcs(scheduleData, selectedTeam);
-  }
+  // Data is available — views built in GLINDA-02 (standings) and GLINDA-03 (schedule)
+  const { season, teams, games, scores } = data
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Opaque band for the status-bar safe area so scrolling content does not show
-          through `black-translucent` when the header has scrolled away. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed top-0 left-0 right-0 z-20"
-        style={{
-          height: 'env(safe-area-inset-top, 0px)',
-          background: 'linear-gradient(165deg, var(--chrome-a) 0%, var(--chrome-b) 100%)',
-        }}
-      />
-      <Header />
-      <TeamSelector
-        teams={scheduleData.teams}
-        selectedTeam={selectedTeam}
-        onSelect={selectTeam}
-        onAddTeamCalendar={handleAddTeamCalendar}
-        onExportTeamSchedulePng={onExportTeamSchedulePng}
-        exportPngPending={exportPngPending}
-      />
-      <MatchSheetProvider teams={scheduleData.teams} selectedTeam={selectedTeam}>
-        <Content
-          schedule={scheduleData}
-          teams={scheduleData.teams}
-          selectedTeam={selectedTeam}
-          collapsedByCard={collapsedByCard}
-          onToggleCard={handleToggleCard}
-          teamScheduleExportRef={teamScheduleExportRef}
-          schedulePageLoadedAt={PAGE_LOADED_AT}
-        />
-      </MatchSheetProvider>
-      <Footer />
-      {exportPngPending && selectedTeam != null ? (
-        <LoadingOverlay
-          teamName={scheduleData.teams[selectedTeam].name}
-          teamEmoji={scheduleData.teams[selectedTeam].emoji}
-        />
-      ) : null}
+      {/* Placeholder — replaced by Header + standings/schedule views in GLINDA-02/03 */}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+        <p className="text-slate-400 text-sm text-center">
+          {season.name} · {Object.keys(teams).length} teams · {games.length} fixtures ·{' '}
+          {Object.keys(scores).length} results
+        </p>
+      </main>
     </div>
-  );
+  )
 }
