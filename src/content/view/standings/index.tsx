@@ -9,8 +9,8 @@ type Props = {
 
 /** Maps raw division keys to friendly display labels. */
 function divisionLabel(div: string): string {
-  if (div === 'Div1') return 'Division 1'
-  if (div === 'Div2') return 'Division 2'
+  if (div === 'Div1') return 'Elphaba'
+  if (div === 'Div2') return 'Glinda'
   return div
 }
 
@@ -64,7 +64,7 @@ export function StandingsView({ data }: Props) {
 
       {/* Legend */}
       <p className="text-[0.7rem] text-slate-400 text-right">
-        P = Played · W = Won · D = Drawn · L = Lost · Pts = Points · RS = Runs Scored
+        P = Played · W = Won · D = Drawn · L = Lost · RS = Runs Scored
       </p>
     </div>
   )

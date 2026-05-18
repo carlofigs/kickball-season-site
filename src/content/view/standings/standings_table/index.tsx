@@ -38,9 +38,6 @@ export function StandingsTable({ rows }: Props) {
             <th className="hidden px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400 sm:table-cell">
               L
             </th>
-            <th className="px-2 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-500">
-              Pts
-            </th>
             <th className="px-3 py-2.5 text-center text-[0.65rem] font-bold uppercase tracking-widest text-slate-400">
               RS
             </th>
@@ -100,11 +97,6 @@ export function StandingsTable({ rows }: Props) {
                 {/* Lost — hidden on mobile */}
                 <td className="hidden px-2 py-2.5 text-center tabular-nums text-slate-500 sm:table-cell">
                   {row.lost}
-                </td>
-
-                {/* Points — highlighted */}
-                <td className="px-2 py-2.5 text-center tabular-nums font-bold text-slate-900">
-                  {row.points}
                 </td>
 
                 {/* Runs scored */}

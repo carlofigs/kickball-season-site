@@ -86,7 +86,11 @@ export function computeStandings(
           ...stats,
         }
       })
-      .sort((a, b) => b.points - a.points || b.runsScored - a.runsScored)
+      .sort((a, b) =>
+        b.won - a.won ||
+        b.drawn - a.drawn ||
+        b.runsScored - a.runsScored
+      )
   }
 
   return result
