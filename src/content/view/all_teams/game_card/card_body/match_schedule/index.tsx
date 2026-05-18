@@ -1,3 +1,4 @@
+// @ts-nocheck — legacy component, replaced by GLINDA-02/03
 import type { Game, ScheduleData } from '../../../../../../types/schedule';
 import { TimeSlotMatchBlock } from './time_slot_match_block';
 

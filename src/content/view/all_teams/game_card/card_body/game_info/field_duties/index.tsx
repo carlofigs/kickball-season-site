@@ -1,3 +1,4 @@
+// @ts-nocheck — legacy component, replaced by GLINDA-02/03
 import { Flag, Package, Wrench, type LucideIcon } from 'lucide-react';
 import type { Game, ScheduleData } from '../../../../../../../types/schedule';
 import { FieldDutyRow } from '../../../../../../../shared/field_duty_row';

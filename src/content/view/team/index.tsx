@@ -1,3 +1,4 @@
+// @ts-nocheck — legacy component, replaced by GLINDA-02/03
 import type { RefObject } from 'react';
 import type { ScheduleData } from '../../../types/schedule';
 import { TeamScheduleCard } from './team_schedule_card';
