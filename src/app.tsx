@@ -34,7 +34,7 @@ export function App() {
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 sm:py-8">
         {activeTab === 'standings' && <StandingsView data={data} />}
-        {activeTab === 'schedule'  && <ScheduleView />}
+        {activeTab === 'schedule'  && <ScheduleView data={data} />}
       </main>
     </div>
   )
