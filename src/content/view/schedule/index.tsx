@@ -61,19 +61,6 @@ function dutyTimes(games: DbGame[]): { setup: string | null; packdown: string | 
   }
 }
 
-// ─── Color swatch (duties in All Teams) ──────────────────────────────────────
-
-function ColorSwatch({ teamColor, teams }: { teamColor: string; teams: SeasonData['teams'] }) {
-  const hex = teams[teamColor]?.color_hex ?? '#94a3b8'
-  return (
-    <span
-      title={teams[teamColor]?.display_name ?? teamColor}
-      className="inline-block size-4 rounded-full ring-1 ring-black/10 shrink-0"
-      style={{ backgroundColor: hex }}
-    />
-  )
-}
-
 // ─── Duties table ─────────────────────────────────────────────────────────────
 
 type DutiesTableProps = {
@@ -83,42 +70,34 @@ type DutiesTableProps = {
   setupTime: string | null
   packdownTime: string | null
   teams: SeasonData['teams']
-  /** When true show color swatches only; when false show names */
-  compact: boolean
 }
 
 function DutiesTable({
   setupTeams, packdownTeams, lineRefByTime,
-  setupTime, packdownTime, teams, compact,
+  setupTime, packdownTime, teams,
 }: DutiesTableProps) {
   const hasAny = setupTeams.length > 0 || packdownTeams.length > 0 || lineRefByTime.length > 0
   if (!hasAny) return null
 
+  // Always show dot + team_color key (e.g. "Baby Blue")
   function TeamCell({ colors }: { colors: string[] }) {
     if (!colors.length) return <td className="px-3 py-2 text-xs text-slate-300">—</td>
     return (
       <td className="px-3 py-2">
-        {compact ? (
-          <div className="flex flex-wrap gap-1">
-            {colors.map(c => <ColorSwatch key={c} teamColor={c} teams={teams} />)}
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-1.5">
-            {colors.map(c => {
-              const team = teams[c]
-              const hex = team?.color_hex ?? '#94a3b8'
-              return (
-                <span key={c} className="inline-flex items-center gap-1 text-xs text-slate-600">
-                  <span
-                    className="size-2.5 rounded-full ring-1 ring-black/10 shrink-0"
-                    style={{ backgroundColor: hex }}
-                  />
-                  {team?.display_name ?? c}
-                </span>
-              )
-            })}
-          </div>
-        )}
+        <div className="flex flex-wrap gap-1.5">
+          {colors.map(c => {
+            const hex = teams[c]?.color_hex ?? '#94a3b8'
+            return (
+              <span key={c} className="inline-flex items-center gap-1 text-xs text-slate-600">
+                <span
+                  className="size-2.5 shrink-0 rounded-full ring-1 ring-black/10"
+                  style={{ backgroundColor: hex }}
+                />
+                {c}
+              </span>
+            )
+          })}
+        </div>
       </td>
     )
   }
@@ -213,7 +192,7 @@ function TimetableCell({
           style={{ backgroundColor: tA?.color_hex ?? '#94a3b8' }}
         />
         <span className={`truncate leading-tight ${aWon ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
-          {tA?.display_name ?? game.team_a ?? '—'}
+          {game.team_a ?? '—'}
         </span>
         {hasScore && (
           <span className={`ml-auto shrink-0 tabular-nums ${aWon ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
@@ -229,7 +208,7 @@ function TimetableCell({
           style={{ backgroundColor: tB?.color_hex ?? '#94a3b8' }}
         />
         <span className={`truncate leading-tight ${bWon ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
-          {tB?.display_name ?? game.team_b ?? '—'}
+          {game.team_b ?? '—'}
         </span>
         {hasScore && (
           <span className={`ml-auto shrink-0 tabular-nums ${bWon ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
@@ -344,7 +323,6 @@ function GameDayAccordion({
             setupTime={setupTime}
             packdownTime={packdownTime}
             teams={teams}
-            compact={true}
           />
 
           {/* Timetable: time rows × field columns */}
