@@ -19,10 +19,7 @@ export function Header() {
             <CalendarDays className="size-[22px] text-indigo-600" />
           </div>
         </div>
-        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500 sm:col-start-2 sm:row-start-1">
-          Season 17
-        </p>
-        <h1 className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:col-start-2 sm:row-start-2 md:text-3xl md:gap-x-3.5">
+        <h1 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-extrabold leading-tight tracking-tight text-slate-900 sm:col-start-2 sm:row-start-1 sm:row-span-2 sm:self-center md:text-3xl md:gap-x-3.5">
           <span className="text-slate-900">Kickball</span>
           <span className="inline-flex shrink-0 items-center rounded-full border border-slate-900/12 bg-white px-[0.65rem] py-[0.28rem] text-[0.625rem] font-bold uppercase tracking-[0.1em] text-slate-900 shadow-sm">
             Sydney Summer 2026
