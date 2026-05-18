@@ -620,6 +620,8 @@ export function ScheduleView({ data }: Props) {
     })
   }, [teams])
 
+  const [jumpDay, setJumpDay] = useState('')
+
   const toggleDay = (key: string) => {
     setOpenDays(prev => {
       const next = new Set(prev)
@@ -628,48 +630,91 @@ export function ScheduleView({ data }: Props) {
     })
   }
 
+  function jumpToDay(key: string) {
+    if (!key) return
+    setJumpDay('')
+    // Open the accordion first, then scroll
+    setOpenDays(prev => new Set([...prev, key]))
+    setTimeout(() => {
+      document.getElementById(`game-day-${key}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
   if (gameDays.length === 0) {
     return <p className="py-12 text-center text-sm text-slate-400">No games scheduled yet.</p>
   }
 
+  const selectClass = "rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+
   return (
-    <div className="space-y-6">
-      {/* Team filter */}
-      <div className="flex items-center gap-3">
-        <label htmlFor="team-filter" className="shrink-0 text-xs font-semibold text-slate-500">
-          Filter by team
-        </label>
-        <select
-          id="team-filter"
-          value={selectedTeam ?? ''}
-          onChange={e => setSelectedTeam(e.target.value || null)}
-          className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <option value="">All Teams</option>
-          {teamList.map(t => (
-            <option key={t.team_color} value={t.team_color}>
-              {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
-            </option>
-          ))}
-        </select>
+    <div>
+      {/* Sticky controls bar */}
+      <div className="sticky top-[44px] z-9 -mx-4 border-b border-slate-100 bg-white/95 px-4 py-2.5 backdrop-blur-sm">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          {/* Team filter */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="team-filter" className="shrink-0 text-xs font-semibold text-slate-500">
+              Team
+            </label>
+            <select
+              id="team-filter"
+              value={selectedTeam ?? ''}
+              onChange={e => setSelectedTeam(e.target.value || null)}
+              className={selectClass}
+            >
+              <option value="">All Teams</option>
+              {teamList.map(t => (
+                <option key={t.team_color} value={t.team_color}>
+                  {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Jump to game day — only in All Teams view */}
+          {selectedTeam === null && (
+            <div className="flex items-center gap-2">
+              <label htmlFor="day-jump" className="shrink-0 text-xs font-semibold text-slate-500">
+                Jump to
+              </label>
+              <select
+                id="day-jump"
+                value={jumpDay}
+                onChange={e => jumpToDay(e.target.value)}
+                className={selectClass}
+              >
+                <option value="">Game day…</option>
+                {calendarGroups.map(group => (
+                  <option key={group.key} value={group.key}>
+                    {group.label}{group.date ? ` · ${fmtDate(group.date)}` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
       </div>
 
+      <div className="mt-4">
       {selectedTeam === null ? (
         <div className="space-y-3">
           {calendarGroups.map(group => (
+            <div key={group.key} id={`game-day-${group.key}`} style={{ scrollMarginTop: '96px' }}>
             <GameDayAccordion
-              key={group.key}
               group={group}
               teams={teams}
               scores={scores}
               isOpen={openDays.has(group.key)}
               onToggle={() => toggleDay(group.key)}
             />
+            </div>
           ))}
         </div>
       ) : (
         <TeamView teamColor={selectedTeam} gameDays={gameDays} teams={teams} scores={scores} />
       )}
+      </div>
     </div>
   )
 }
