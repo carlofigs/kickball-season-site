@@ -325,7 +325,7 @@ function GameDayAccordion({
             <table className="border-collapse text-xs" style={{ minWidth: 'max-content', width: '100%' }}>
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="sticky left-0 z-10 bg-white pb-2 pl-4 pr-3 text-right text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 w-[4.5rem]">
+                  <th className="sticky left-0 z-[1] bg-white pb-2 pl-4 pr-3 text-right text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 w-[4.5rem]">
                     <span className="flex items-center justify-end gap-1">
                       <Clock className="size-3" /> Time
                     </span>
@@ -340,7 +340,7 @@ function GameDayAccordion({
               <tbody>
                 {timeSlots.map(time => (
                   <tr key={time} className="align-top">
-                    <td className="sticky left-0 z-10 bg-white pl-4 pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
+                    <td className="sticky left-0 z-[1] bg-white pl-4 pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
                       {time}
                     </td>
                     {fieldsPresent.map((field, i) => {
