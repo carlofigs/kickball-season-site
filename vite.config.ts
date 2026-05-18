@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 /** GitHub Pages project site: https://<user>.github.io/<repo>/ — must match the repo name. */
-const GITHUB_PAGES_BASE = '/kickball/';
+const GITHUB_PAGES_BASE = '/kickball-season-site/';
 
 export default defineConfig(({ command }) => ({
   root: '.',
