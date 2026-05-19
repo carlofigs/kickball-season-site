@@ -81,7 +81,6 @@ export function computeStandings(
           displayName: team.display_name ?? team.team_color,
           emoji: team.emoji ?? '',
           colorHex: team.color_hex ?? '#94a3b8',
-          pillLabelColor: team.pill_label_color ?? '#ffffff',
           division: team.division ?? div,
           ...stats,
         }

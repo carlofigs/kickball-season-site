@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useSeasonData } from './hooks/useSeasonData'
-import { Navbar } from './nav/navbar'
-import type { AppTab } from './nav/tab_bar'
+import { Navbar, type AppTab } from './nav/navbar'
 import { StandingsView } from './content/view/standings'
 import { ScheduleView } from './content/view/schedule'
 

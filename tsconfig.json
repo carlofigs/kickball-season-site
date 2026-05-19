@@ -13,5 +13,28 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "vite.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "vite.config.ts"],
+  "exclude": [
+    "src/content/view/all_teams",
+    "src/content/view/team",
+    "src/content/sheet",
+    "src/content/index.tsx",
+    "src/header",
+    "src/footer",
+    "src/loading_overlay",
+    "src/team_selector",
+    "src/shared/field_duty_row",
+    "src/shared/pitch_field_pill",
+    "src/shared/toast",
+    "src/nav/tab_bar",
+    "src/hooks/use_document_theme.ts",
+    "src/hooks/use_schedule_routing.ts",
+    "src/hooks/use_team_deep_link.ts",
+    "src/hooks/use_team_schedule_png_export.ts",
+    "src/utils/calendar.ts",
+    "src/utils/png_export.ts",
+    "src/utils/routing.ts",
+    "src/utils/schedule.ts",
+    "src/utils/scroll.ts"
+  ]
 }

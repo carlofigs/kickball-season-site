@@ -1,5 +1,6 @@
 import { BarChart2, CalendarDays } from 'lucide-react'
-import type { AppTab } from '../tab_bar'
+
+export type AppTab = 'standings' | 'schedule'
 
 type Tab = {
   id: AppTab

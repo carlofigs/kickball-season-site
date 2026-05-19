@@ -89,7 +89,6 @@ export interface StandingsRow {
   displayName: string
   emoji: string
   colorHex: string
-  pillLabelColor: string
   division: string
   played: number
   won: number
@@ -102,13 +101,3 @@ export interface StandingsRow {
 // ─── Utility ──────────────────────────────────────────────────────────────────
 
 export type PitchField = 'Road' | 'Middle' | 'Kiosk' | 'Water'
-
-// ─── Backward-compat stubs ────────────────────────────────────────────────────
-// These satisfy old view component imports until GLINDA-02/03 rewrites them.
-// Do not use in new code.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ScheduleData = any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Game = any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Fixture = any

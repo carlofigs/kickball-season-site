@@ -1,13 +1,13 @@
 {
-  "name": "Kickball · Sydney Summer 2026 Schedule — Season 17",
+  "name": "Kickball · Sydney Summer 2026",
   "short_name": "Kickball",
-  "description": "Sydney Summer 2026 kickball schedule — Season 17",
+  "description": "Sydney Summer 2026 kickball schedule — fixtures, standings, and field duties.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#f8fafc",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "icons": [
     {
       "src": "icon-192.png",
