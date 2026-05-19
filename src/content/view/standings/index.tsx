@@ -66,9 +66,9 @@ export function StandingsView({ data }: Props) {
                 key={div}
                 onClick={() => setActiveIndex(i)}
                 className={[
-                  'flex-1 rounded-full py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+                  'flex-1 rounded-full py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500',
                   i === activeIndex
-                    ? 'bg-indigo-600 text-white'
+                    ? 'bg-green-500 text-white'
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700',
                 ].join(' ')}
               >

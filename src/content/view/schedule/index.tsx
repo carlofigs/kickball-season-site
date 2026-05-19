@@ -297,7 +297,7 @@ function GameDayAccordion({
               <span className="text-xs text-slate-400">{fmtDate(group.date)}</span>
             )}
             {theme && (
-              <span className="rounded-full bg-indigo-50 border border-indigo-100 px-2 py-0.5 text-[0.6rem] font-semibold text-indigo-600 truncate">
+              <span className="rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[0.6rem] font-semibold text-green-700 truncate">
                 {theme}
               </span>
             )}
@@ -645,12 +645,12 @@ export function ScheduleView({ data }: Props) {
     return <p className="py-12 text-center text-sm text-slate-400">No games scheduled yet.</p>
   }
 
-  const selectClass = "rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+  const selectClass = "rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
 
   return (
     <div>
       {/* Sticky controls bar */}
-      <div className="sticky top-[44px] z-9 -mx-4 border-b border-slate-100 bg-white/95 px-4 py-2.5 backdrop-blur-sm">
+      <div className="sticky top-[92px] z-9 -mx-4 border-b border-slate-100 bg-white/95 px-4 py-2.5 backdrop-blur-sm">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {/* Team filter */}
           <div className="flex items-center gap-2">
@@ -700,7 +700,7 @@ export function ScheduleView({ data }: Props) {
       {selectedTeam === null ? (
         <div className="space-y-3">
           {calendarGroups.map(group => (
-            <div key={group.key} id={`game-day-${group.key}`} style={{ scrollMarginTop: '96px' }}>
+            <div key={group.key} id={`game-day-${group.key}`} style={{ scrollMarginTop: '140px' }}>
             <GameDayAccordion
               group={group}
               teams={teams}
