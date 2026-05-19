@@ -107,10 +107,10 @@ function DutiesTable({
       <p className="mb-1.5 text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">
         Team Duties
       </p>
-      <div className="overflow-hidden rounded-lg border border-slate-100">
+      <div className="overflow-hidden rounded-lg border border-slate-200">
         <table className="w-full text-xs border-collapse">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50/80">
+            <tr className="border-b border-slate-200 bg-slate-50/80">
               <th className="px-3 py-2 text-left text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
                 Duty
               </th>
@@ -124,7 +124,7 @@ function DutiesTable({
           </thead>
           <tbody>
             {setupTeams.length > 0 && (
-              <tr className="border-b border-slate-100 last:border-0">
+              <tr className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="px-3 py-2 whitespace-nowrap">
                   <span className="flex items-center gap-1.5 font-semibold text-slate-600">
                     <Wrench className="size-3 text-green-500" /> Setup
@@ -137,7 +137,7 @@ function DutiesTable({
               </tr>
             )}
             {packdownTeams.length > 0 && (
-              <tr className="border-b border-slate-100 last:border-0">
+              <tr className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60 transition-colors">
                 <td className="px-3 py-2 whitespace-nowrap">
                   <span className="flex items-center gap-1.5 font-semibold text-slate-600">
                     <Package className="size-3 text-amber-500" /> Pack Down
@@ -288,7 +288,7 @@ function GameDayAccordion({
       {/* Header */}
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-3 px-4 py-3.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+        className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-500 ${isOpen ? 'bg-slate-50' : 'bg-white hover:bg-slate-50/60'}`}
       >
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
@@ -332,7 +332,9 @@ function GameDayAccordion({
                   </th>
                   {fieldsPresent.map(f => (
                     <th key={f} className="pb-2 px-1.5 pr-4 sm:pr-1.5 text-center text-[0.6rem] font-bold uppercase tracking-widest text-slate-400 min-w-[9rem]">
-                      {f}
+                      <span className="inline-flex items-center justify-center gap-1">
+                        <MapPin className="size-2.5 shrink-0" />{f}
+                      </span>
                     </th>
                   ))}
                 </tr>
@@ -350,7 +352,7 @@ function GameDayAccordion({
                         <td key={field} className={`px-1.5 pt-1.5 pb-2 ${isLast ? 'pr-4 sm:pr-1.5' : ''}`}>
                           {game
                             ? <TimetableCell game={game} teams={teams} scores={scores} />
-                            : null
+                            : <div className="flex h-full min-h-[3rem] items-center justify-center text-slate-200 select-none">·</div>
                           }
                         </td>
                       )
@@ -408,7 +410,7 @@ function TeamGameCard({
       className="rounded-xl border bg-white overflow-hidden shadow-[0_1px_3px_rgba(15,23,42,0.06)]"
       style={{ borderColor: `${oppHex}40` }}
     >
-      <div className="h-1" style={{ backgroundColor: oppHex }} />
+      <div className="h-1.5" style={{ backgroundColor: oppHex }} />
       <div className="p-4 space-y-3">
         {/* Header */}
         <div className="flex flex-wrap items-center gap-2">
@@ -442,8 +444,8 @@ function TeamGameCard({
           </div>
         )}
 
-        {/* Time + field + score */}
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Time + field */}
+        <div className="flex flex-wrap items-center gap-2">
           {game.match_time && (
             <span className="flex items-center gap-1 text-xs font-semibold text-slate-600">
               <Clock className="size-3 text-slate-400" />
@@ -456,15 +458,17 @@ function TeamGameCard({
               {game.field}
             </span>
           )}
-          {hasScore && (
-            <span className={`ml-auto text-sm font-bold tabular-nums ${iWon ? 'text-green-600' : theyWon ? 'text-slate-400' : 'text-slate-600'}`}>
-              {myScore} – {theirScore}
-              {iWon && <span className="ml-1 text-[0.6rem] font-semibold text-green-500">W</span>}
-              {theyWon && <span className="ml-1 text-[0.6rem] font-semibold text-red-400">L</span>}
-              {!iWon && !theyWon && <span className="ml-1 text-[0.6rem] font-semibold text-slate-400">D</span>}
-            </span>
-          )}
         </div>
+
+        {/* Score */}
+        {hasScore && (
+          <div className={`flex items-baseline gap-1.5 text-lg font-extrabold tabular-nums ${iWon ? 'text-green-600' : theyWon ? 'text-slate-400' : 'text-slate-600'}`}>
+            {myScore} – {theirScore}
+            {iWon && <span className="text-[0.65rem] font-bold text-green-500 uppercase tracking-wide">W</span>}
+            {theyWon && <span className="text-[0.65rem] font-bold text-red-400 uppercase tracking-wide">L</span>}
+            {!iWon && !theyWon && <span className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-wide">D</span>}
+          </div>
+        )}
 
         {/* Duty badges */}
         {(isOnSetup || isOnPackdown || isOnLineRef) && (
@@ -650,7 +654,7 @@ export function ScheduleView({ data }: Props) {
   return (
     <div>
       {/* Sticky controls bar */}
-      <div className="sticky top-[92px] z-9 -mx-4 border-b border-slate-100 bg-white/95 px-4 py-2.5 backdrop-blur-sm">
+      <div className="sticky top-[92px] z-9 -mx-4 border-b border-slate-100 bg-slate-50/95 px-4 py-2.5 backdrop-blur-sm">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {/* Team filter */}
           <div className="flex items-center gap-2">
