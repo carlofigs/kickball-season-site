@@ -9,7 +9,7 @@ type Props = {
 }
 
 export function ScheduleView({ data }: Props) {
-  const { games, teams, scores } = data
+  const { games, teams, scores, events } = data
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null)
   const [openDays, setOpenDays] = useState<Set<string>>(new Set())
   const [jumpDay, setJumpDay] = useState('')
@@ -26,21 +26,63 @@ export function ScheduleView({ data }: Props) {
   }, [games])
 
   const calendarGroups = useMemo((): CalendarGroup[] => {
+    // Events-first: season_events drives the grouping; games attach via event_id.
+    // Falls back to game_day_number grouping if no season_events are loaded.
+    if (events.length > 0) {
+      // Build a map of event_uuid → games for O(1) lookup
+      const gamesByEventId = new Map<string, DbGame[]>()
+      for (const g of games) {
+        if (!g.event_id) continue
+        const arr = gamesByEventId.get(g.event_id) ?? []
+        arr.push(g)
+        gamesByEventId.set(g.event_id, arr)
+      }
+
+      // Group season_events by week_label (preserving sort_order of first occurrence)
+      const groupMap = new Map<string, CalendarGroup>()
+      for (const ev of events) {
+        if (!groupMap.has(ev.week_label)) {
+          groupMap.set(ev.week_label, {
+            key: ev.week_label,
+            weekLabel: ev.week_label,
+            date: ev.event_date,
+            sortOrder: ev.sort_order,
+            eventLabels: [],
+            games: [],
+          })
+        }
+        const group = groupMap.get(ev.week_label)!
+        if (ev.division) {
+          group.eventLabels.push({ eventName: ev.event_name, division: ev.division })
+        }
+        const matched = gamesByEventId.get(ev.event_uuid) ?? []
+        group.games.push(...matched)
+      }
+
+      return [...groupMap.values()].sort((a, b) => a.sortOrder - b.sortOrder)
+    }
+
+    // Fallback: group by game_day_number, merge same-date days
     const groups: CalendarGroup[] = []
     for (const [dayNum, dayGames] of gameDays) {
       const date = dayGames[0]?.scheduled_at?.substring(0, 10) ?? null
       const last = groups[groups.length - 1]
       if (last && date && last.date === date) {
-        last.label += ` & ${dayNum}`
         last.key += `-${dayNum}`
-        last.dayNumbers.push(dayNum)
         last.games.push(...dayGames)
       } else {
-        groups.push({ key: String(dayNum), label: `Game ${dayNum}`, date, dayNumbers: [dayNum], games: [...dayGames] })
+        groups.push({
+          key: String(dayNum),
+          weekLabel: `Game ${dayNum}`,
+          date,
+          sortOrder: dayNum,
+          eventLabels: [],
+          games: [...dayGames],
+        })
       }
     }
     return groups
-  }, [gameDays])
+  }, [events, games, gameDays])
 
   const teamList = useMemo(() => {
     const divOrder: Record<string, number> = { Div1: 0, Div2: 1, Guardian: 2 }
@@ -112,10 +154,10 @@ export function ScheduleView({ data }: Props) {
                 onChange={e => jumpToDay(e.target.value)}
                 className={selectClass}
               >
-                <option value="">Game day…</option>
-                {calendarGroups.map(group => (
+                <option value="">Week…</option>
+                {calendarGroups.filter(g => g.games.length > 0).map(group => (
                   <option key={group.key} value={group.key}>
-                    {group.label}{group.date ? ` · ${fmtDate(group.date)}` : ''}
+                    {group.weekLabel}{group.date ? ` · ${fmtDate(group.date)}` : ''}
                   </option>
                 ))}
               </select>

@@ -36,6 +36,17 @@ export interface DbSeasonTeam {
   division: string | null        // "Div1" | "Div2" | "Guardian"
 }
 
+/** public.season_events row — calendar items for the season timeline. */
+export interface DbSeasonEvent {
+  event_uuid: string
+  season_id: string
+  week_label: string             // accordion group label — "Week 1", "Rain Week", "Opening Party"
+  division: string | null        // "Open" | "Guardian" | null for non-game events
+  event_name: string | null      // sub-label — "Game 1", "Photo Day" | null for non-game events
+  event_date: string             // "YYYY-MM-DD"
+  sort_order: number
+}
+
 /**
  * public.games row — season rows only (context_type = 'season').
  */
@@ -48,6 +59,7 @@ export interface DbGame {
   team_b: string | null          // team_color key
   status: 'scheduled' | 'in_progress' | 'complete' | 'cancelled'
   game_day_number: number | null // groups fixtures by game day (1–7)
+  event_id: string | null        // FK → season_events.event_uuid
   match_time: string | null      // display time — "3:00 PM" | "4:00 PM"
   scheduled_at: string | null    // ISO timestamptz
   field: string | null           // "Road" | "Middle" | "Kiosk" | "Water"
@@ -79,6 +91,8 @@ export interface SeasonData {
   games: DbGame[]
   /** Keyed by game_uuid for O(1) lookup. */
   scores: Record<string, DbGameScore>
+  /** Ordered by sort_order — drives schedule timeline grouping. */
+  events: DbSeasonEvent[]
 }
 
 // ─── Computed standings ───────────────────────────────────────────────────────

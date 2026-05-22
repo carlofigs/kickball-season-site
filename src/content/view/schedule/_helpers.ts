@@ -6,11 +6,17 @@ export const FIELD_ORDER = ['Road', 'Middle', 'Kiosk', 'Water']
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+export interface EventLabel {
+  eventName: string | null
+  division: string | null
+}
+
 export interface CalendarGroup {
   key: string
-  label: string
+  weekLabel: string
   date: string | null
-  dayNumbers: number[]
+  sortOrder: number
+  eventLabels: EventLabel[]  // per-division sub-labels shown in accordion header
   games: DbGame[]
 }
 

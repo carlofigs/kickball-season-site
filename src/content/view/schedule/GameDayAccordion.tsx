@@ -14,6 +14,8 @@ type Props = {
 }
 
 export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Props) {
+  const hasGames = group.games.length > 0
+
   const setupTeams = useMemo(() => {
     const seen = new Set<string>()
     for (const g of group.games) for (const c of g.field_setup_teams ?? []) seen.add(c)
@@ -64,6 +66,38 @@ export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Pro
   const theme = meta?.game_day_theme ?? null
   const themeDesc = meta?.game_day_theme_desc ?? null
 
+  // ── Shared header content ────────────────────────────────────────────────────
+  const headerContent = (
+    <div className="flex-1 min-w-0">
+      <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+        <span className="text-sm font-bold text-slate-800">{group.weekLabel}</span>
+        {group.date && (
+          <span className="text-xs text-slate-400">{fmtDate(group.date)}</span>
+        )}
+        {group.eventLabels.map((el, i) => (
+          <span
+            key={i}
+            className="rounded-full bg-slate-100 px-2 py-0.5 text-[0.6rem] font-semibold text-slate-500 truncate"
+          >
+            {[el.eventName, el.division].filter(Boolean).join(' · ')}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+
+  // ── Non-game event — non-expandable tile ─────────────────────────────────────
+  if (!hasGames) {
+    return (
+      <div className="rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+        <div className="flex items-center gap-3 px-4 py-3.5">
+          {headerContent}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Game week — expandable accordion ─────────────────────────────────────────
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
       {/* Header */}
@@ -71,19 +105,7 @@ export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Pro
         onClick={onToggle}
         className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-500 ${isOpen ? 'bg-slate-50' : 'bg-white hover:bg-slate-50/60'}`}
       >
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-            <span className="text-sm font-bold text-slate-800">{group.label}</span>
-            {group.date && (
-              <span className="text-xs text-slate-400">{fmtDate(group.date)}</span>
-            )}
-            {theme && (
-              <span className="rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[0.6rem] font-semibold text-green-700 truncate">
-                {theme}
-              </span>
-            )}
-          </div>
-        </div>
+        {headerContent}
         {isOpen
           ? <ChevronUp className="shrink-0 size-4 text-slate-400" />
           : <ChevronDown className="shrink-0 size-4 text-slate-400" />
@@ -93,8 +115,16 @@ export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Pro
       {/* Body */}
       {isOpen && (
         <div className="border-t border-slate-100 px-4 pb-4 pt-3 space-y-4">
-          {themeDesc && (
-            <p className="text-xs text-slate-400 italic">{themeDesc}</p>
+          {/* Theme block — only when game_day_theme is set */}
+          {(theme || themeDesc) && (
+            <div className="rounded-lg bg-slate-50 border border-slate-100 px-3 py-2.5 space-y-0.5">
+              {theme && (
+                <p className="text-xs font-semibold text-slate-700">{theme}</p>
+              )}
+              {themeDesc && (
+                <p className="text-xs text-slate-400">{themeDesc}</p>
+              )}
+            </div>
           )}
 
           {/* Timetable */}
