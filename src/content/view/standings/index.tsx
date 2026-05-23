@@ -7,6 +7,13 @@ type Props = {
   data: SeasonData
 }
 
+function divisionTabColor(div: string): string {
+  if (div === 'Div1') return 'bg-green-500 text-white'
+  if (div === 'Div2') return 'bg-pink-500 text-white'
+  if (div === 'Guardians') return 'bg-amber-500 text-white'
+  return 'bg-green-500 text-white'
+}
+
 function divisionLabel(div: string): string {
   if (div === 'Div1') return 'Elphaba'
   if (div === 'Div2') return 'Glinda'
@@ -69,7 +76,7 @@ export function StandingsView({ data }: Props) {
                 className={[
                   'flex-1 rounded-full py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500',
                   i === activeIndex
-                    ? 'bg-green-500 text-white'
+                    ? divisionTabColor(div)
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700',
                 ].join(' ')}
               >

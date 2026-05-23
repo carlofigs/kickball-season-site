@@ -134,12 +134,21 @@ export function ScheduleView({ data }: Props) {
               className={selectClass}
             >
               <option value="">All Teams</option>
-              {teamList.map(t => {
-                const ck = teamKey(t.team_color, t.division)
+              {(['Div1', 'Div2', 'Guardians'] as const).map(div => {
+                const divTeams = teamList.filter(t => t.division === div)
+                if (!divTeams.length) return null
+                const groupLabel = div === 'Div1' ? 'Elphaba' : div === 'Div2' ? 'Glinda' : 'Guardians'
                 return (
-                  <option key={ck} value={ck}>
-                    {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
-                  </option>
+                  <optgroup key={div} label={groupLabel}>
+                    {divTeams.map(t => {
+                      const ck = teamKey(t.team_color, t.division)
+                      return (
+                        <option key={ck} value={ck}>
+                          {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
+                        </option>
+                      )
+                    })}
+                  </optgroup>
                 )
               })}
             </select>

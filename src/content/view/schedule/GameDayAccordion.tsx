@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, Fragment } from 'react'
 import { ChevronDown, ChevronUp, Clock, MapPin } from 'lucide-react'
 import type { SeasonData } from '../../../types/schedule'
 import { teamKey, FIELD_ORDER, type CalendarGroup, parseMatchTime, fmtDate, dutyTimes } from './_helpers'
@@ -77,6 +77,31 @@ export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Pro
     }
     return map
   }, [group.games])
+
+  // Group consecutive time slots by division so we can render section headers + shading.
+  // Open and Guardians never share a time slot, so each slot belongs to exactly one division.
+  const divisionRuns = useMemo(() => {
+    const runs: Array<{ division: string | null; times: string[] }> = []
+    for (const time of timeSlots) {
+      const slot = grid.get(time)
+      const div = slot ? [...slot.values()].find(Boolean)?.division ?? null : null
+      const last = runs[runs.length - 1]
+      if (last && last.division === div) last.times.push(time)
+      else runs.push({ division: div, times: [time] })
+    }
+    return runs
+  }, [timeSlots, grid])
+
+  // O(1) per-time lookup: is this the first slot in its division run?
+  const timeRunMap = useMemo(() => {
+    const m = new Map<string, { division: string | null; isFirst: boolean }>()
+    for (const run of divisionRuns)
+      run.times.forEach((t, i) => m.set(t, { division: run.division, isFirst: i === 0 }))
+    return m
+  }, [divisionRuns])
+
+  // Only render division section headers when the group contains multiple divisions.
+  const showDivHeaders = divisionRuns.length > 1
 
   const meta = group.games[0]
   const theme = meta?.game_day_theme ?? null
@@ -167,25 +192,55 @@ export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Pro
                   </tr>
                 </thead>
                 <tbody>
-                  {timeSlots.map(time => (
-                    <tr key={time} className="align-top">
-                      <td className="sticky left-0 z-[1] bg-white pl-4 pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap">
-                        {time}
-                      </td>
-                      {fieldsPresent.map((field, i) => {
-                        const game = grid.get(time)?.get(field)
-                        const isLast = i === fieldsPresent.length - 1
-                        return (
-                          <td key={field} className={`px-1.5 pt-1.5 pb-2 ${isLast ? 'pr-4 sm:pr-1.5' : ''}`}>
-                            {game
-                              ? <TimetableCell game={game} teams={teams} scores={scores} />
-                              : <div className="flex h-full min-h-[3rem] items-center justify-center text-slate-200 select-none">·</div>
-                            }
+                  {timeSlots.map(time => {
+                    const info = timeRunMap.get(time) ?? { division: null, isFirst: false }
+                    const isGuardians = info.division === 'Guardians'
+                    // Sticky cells need an opaque bg to cover scrolled content.
+                    const timeBg = isGuardians ? 'bg-amber-50' : 'bg-white'
+                    const rowBg = isGuardians ? 'bg-amber-50/50' : ''
+                    return (
+                      <Fragment key={time}>
+                        {/* Division section header — only when multiple divisions are present */}
+                        {showDivHeaders && info.isFirst && (
+                          <tr className={isGuardians ? 'bg-amber-100/60' : 'bg-green-50/80'}>
+                            <td
+                              colSpan={fieldsPresent.length + 1}
+                              className="pl-4 pr-3 py-1"
+                            >
+                              <div className="flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-widest">
+                                {isGuardians ? (
+                                  <span className="text-amber-600">Guardians</span>
+                                ) : (
+                                  <>
+                                    <span className="text-green-600">Elphaba</span>
+                                    <span className="text-slate-400">·</span>
+                                    <span className="text-pink-500">Glinda</span>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                        <tr className={`align-top ${rowBg}`}>
+                          <td className={`sticky left-0 z-[1] ${timeBg} pl-4 pr-3 pt-1.5 pb-2 text-right tabular-nums font-semibold text-slate-500 whitespace-nowrap`}>
+                            {time}
                           </td>
-                        )
-                      })}
-                    </tr>
-                  ))}
+                          {fieldsPresent.map((field, i) => {
+                            const game = grid.get(time)?.get(field)
+                            const isLast = i === fieldsPresent.length - 1
+                            return (
+                              <td key={field} className={`px-1.5 pt-1.5 pb-2 ${isLast ? 'pr-4 sm:pr-1.5' : ''}`}>
+                                {game
+                                  ? <TimetableCell game={game} teams={teams} scores={scores} />
+                                  : <div className="flex h-full min-h-[3rem] items-center justify-center text-slate-200 select-none">·</div>
+                                }
+                              </td>
+                            )
+                          })}
+                        </tr>
+                      </Fragment>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
