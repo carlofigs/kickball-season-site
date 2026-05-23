@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import type { SeasonData, DbGame } from '../../../types/schedule'
-import { type CalendarGroup, fmtDate } from './_helpers'
+import { teamKey, type CalendarGroup, fmtDate } from './_helpers'
 import { GameDayAccordion } from './GameDayAccordion'
 import { TeamView } from './TeamView'
 
@@ -134,11 +134,14 @@ export function ScheduleView({ data }: Props) {
               className={selectClass}
             >
               <option value="">All Teams</option>
-              {teamList.map(t => (
-                <option key={t.team_color} value={t.team_color}>
-                  {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
-                </option>
-              ))}
+              {teamList.map(t => {
+                const ck = teamKey(t.team_color, t.division)
+                return (
+                  <option key={ck} value={ck}>
+                    {t.emoji ? `${t.emoji} ` : ''}{t.display_name ?? t.team_color}
+                  </option>
+                )
+              })}
             </select>
           </div>
 
@@ -182,7 +185,13 @@ export function ScheduleView({ data }: Props) {
             ))}
           </div>
         ) : (
-          <TeamView teamColor={selectedTeam} gameDays={gameDays} teams={teams} scores={scores} />
+          <TeamView
+            teamColor={selectedTeam.split('|')[0]}
+            division={selectedTeam.split('|')[1] ?? ''}
+            gameDays={gameDays}
+            teams={teams}
+            scores={scores}
+          />
         )}
       </div>
     </div>

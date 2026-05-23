@@ -1,10 +1,13 @@
 import { useMemo } from 'react'
 import { Wrench, Package, Flag } from 'lucide-react'
 import type { SeasonData, DbGame } from '../../../types/schedule'
+import { teamKey } from './_helpers'
 import { TeamGameCard } from './TeamGameCard'
 
 type Props = {
   teamColor: string
+  /** Normalised division from the compound key: 'Open' | 'Guardians' | '' */
+  division: string
   gameDays: Array<[number, DbGame[]]>
   teams: SeasonData['teams']
   scores: SeasonData['scores']
@@ -18,8 +21,8 @@ function DayChip({ n }: { n: number }) {
   )
 }
 
-export function TeamView({ teamColor, gameDays, teams, scores }: Props) {
-  const team = teams[teamColor]
+export function TeamView({ teamColor, division, gameDays, teams, scores }: Props) {
+  const team = teams[teamKey(teamColor, division)]
   const hex = team?.color_hex ?? '#94a3b8'
 
   const setupDays = gameDays
@@ -33,8 +36,11 @@ export function TeamView({ teamColor, gameDays, teams, scores }: Props) {
     .map(([n]) => n)
 
   const myGames = useMemo(() =>
-    gameDays.flatMap(([, gs]) => gs.filter(g => g.team_a === teamColor || g.team_b === teamColor)),
-    [gameDays, teamColor],
+    gameDays.flatMap(([, gs]) => gs.filter(g =>
+      (g.team_a === teamColor || g.team_b === teamColor) &&
+      (!division || g.division === division),
+    )),
+    [gameDays, teamColor, division],
   )
 
   return (

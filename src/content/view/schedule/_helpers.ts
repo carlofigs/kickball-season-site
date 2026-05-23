@@ -4,6 +4,25 @@ import type { DbGame } from '../../../types/schedule'
 
 export const FIELD_ORDER = ['Road', 'Middle', 'Kiosk', 'Water']
 
+/**
+ * Compound key for the SeasonData.teams lookup map.
+ * Guardians shares team_color values with Open — keying by color alone causes
+ * silent overwrites. Always use this when building or reading the map.
+ *
+ * Normalises division so the key is consistent across tables:
+ *   season_teams.division = 'Div1' | 'Div2' | 'Guardians'
+ *   games.division         = 'Open' | 'Guardians'
+ * Div1 and Div2 never share a team_color, so collapsing them to 'Open'
+ * keeps the key unique while bridging both tables.
+ *
+ * division is nullable for tournament games; falls back to '' so the
+ * key remains unique per color within season context.
+ */
+export function teamKey(color: string, division: string | null | undefined): string {
+  const norm = (division === 'Div1' || division === 'Div2') ? 'Open' : (division ?? '')
+  return `${color}|${norm}`
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface EventLabel {

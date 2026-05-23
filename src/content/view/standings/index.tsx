@@ -10,6 +10,7 @@ type Props = {
 function divisionLabel(div: string): string {
   if (div === 'Div1') return 'Elphaba'
   if (div === 'Div2') return 'Glinda'
+  if (div === 'Guardians') return 'Guardians'
   return div
 }
 

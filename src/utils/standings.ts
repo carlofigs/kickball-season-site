@@ -1,4 +1,5 @@
 import type { DbGame, DbGameScore, DbSeasonTeam, StandingsRow } from '../types/schedule'
+import { teamKey } from '../content/view/schedule/_helpers'
 
 interface TeamAccumulator {
   played: number
@@ -28,20 +29,21 @@ export function computeStandings(
   teams: Record<string, DbSeasonTeam>,
   divisions: string[],
 ): Record<string, StandingsRow[]> {
-  // Initialise accumulator for every known team
+  // Initialise accumulator keyed by compound key (same format as the teams map).
   const acc: Record<string, TeamAccumulator> = {}
-  for (const color of Object.keys(teams)) {
-    acc[color] = { played: 0, won: 0, drawn: 0, lost: 0, points: 0, runsScored: 0 }
+  for (const ck of Object.keys(teams)) {
+    acc[ck] = { played: 0, won: 0, drawn: 0, lost: 0, points: 0, runsScored: 0 }
   }
 
-  // Process each scored game
+  // Process each scored game — look up accumulator via compound key so
+  // Open and Guardians same-color teams are tracked independently.
   for (const game of games) {
     if (!game.team_a || !game.team_b) continue
     const score = scores[game.uuid]
     if (!score || score.score_a == null || score.score_b == null) continue
 
-    const a = acc[game.team_a]
-    const b = acc[game.team_b]
+    const a = acc[teamKey(game.team_a, game.division)]
+    const b = acc[teamKey(game.team_b, game.division)]
     if (!a || !b) continue
 
     a.played++
@@ -73,7 +75,7 @@ export function computeStandings(
 
     result[div] = divTeams
       .map((team): StandingsRow => {
-        const stats = acc[team.team_color] ?? {
+        const stats = acc[teamKey(team.team_color, team.division)] ?? {
           played: 0, won: 0, drawn: 0, lost: 0, points: 0, runsScored: 0,
         }
         return {

@@ -1,6 +1,6 @@
 import { Clock, MapPin, Wrench, Package, Flag } from 'lucide-react'
 import type { SeasonData, DbGame } from '../../../types/schedule'
-import { fmtDate, dutyTimes } from './_helpers'
+import { teamKey, fmtDate, dutyTimes } from './_helpers'
 
 type Props = {
   game: DbGame
@@ -12,7 +12,7 @@ type Props = {
 export function TeamGameCard({ game, teamColor, teams, scores }: Props) {
   const isTeamA = game.team_a === teamColor
   const opponentColor = isTeamA ? game.team_b : game.team_a
-  const opponent = opponentColor ? teams[opponentColor] : null
+  const opponent = opponentColor ? teams[teamKey(opponentColor, game.division)] : null
   const oppHex = opponent?.color_hex ?? '#94a3b8'
 
   const score = scores[game.uuid]

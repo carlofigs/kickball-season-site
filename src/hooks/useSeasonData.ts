@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import type { DbSeason, DbSeasonTeam, DbGame, DbGameScore, DbSeasonEvent, SeasonData } from '../types/schedule'
+import { teamKey } from '../content/view/schedule/_helpers'
 
 interface UseSeasonDataResult {
   data: SeasonData | null
@@ -61,7 +62,7 @@ export function useSeasonData(): UseSeasonDataResult {
             .eq('season_id', season.season_id),
           supabase!
             .from('games')
-            .select('uuid, context_type, context_id, game_number, team_a, team_b, status, game_day_number, event_id, match_time, scheduled_at, field, line_ref_teams, field_setup_teams, field_packdown_teams, game_day_theme, game_day_theme_desc')
+            .select('uuid, context_type, context_id, game_number, team_a, team_b, status, game_day_number, division, event_id, match_time, scheduled_at, field, line_ref_teams, field_setup_teams, field_packdown_teams, game_day_theme, game_day_theme_desc')
             .eq('context_type', 'season')
             .eq('context_id', season.season_id)
             .order('game_day_number', { ascending: true })
@@ -98,8 +99,10 @@ export function useSeasonData(): UseSeasonDataResult {
         if (cancelled) return
 
         // Build lookup maps
+        // Key: teamKey(team_color, division) — Guardians shares colors with Open,
+        // so a flat team_color key causes silent overwrites.
         const teams: Record<string, DbSeasonTeam> = {}
-        for (const t of teamRows) teams[t.team_color] = t
+        for (const t of teamRows) teams[teamKey(t.team_color, t.division)] = t
 
         const scores: Record<string, DbGameScore> = {}
         for (const s of scoreRows) scores[s.game_uuid] = s

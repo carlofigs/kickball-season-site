@@ -1,29 +1,32 @@
 import { Wrench, Package, Flag } from 'lucide-react'
 import type { SeasonData } from '../../../types/schedule'
+import { teamKey } from './_helpers'
+
+export type DutyTeam = { color: string; division: string | null }
 
 type Props = {
-  setupTeams: string[]
-  packdownTeams: string[]
-  lineRefByTime: Array<[string, string[]]>
+  setupTeams: DutyTeam[]
+  packdownTeams: DutyTeam[]
+  lineRefByTime: Array<[string, DutyTeam[]]>
   setupTime: string | null
   packdownTime: string | null
   teams: SeasonData['teams']
 }
 
-function TeamCell({ colors, teams }: { colors: string[]; teams: SeasonData['teams'] }) {
-  if (!colors.length) return <td className="px-3 py-2 text-xs text-slate-300">—</td>
+function TeamCell({ items, teams }: { items: DutyTeam[]; teams: SeasonData['teams'] }) {
+  if (!items.length) return <td className="px-3 py-2 text-xs text-slate-300">—</td>
   return (
     <td className="px-3 py-2">
       <div className="flex flex-wrap gap-1.5">
-        {colors.map(c => {
-          const hex = teams[c]?.color_hex ?? '#94a3b8'
+        {items.map(({ color, division }) => {
+          const hex = teams[teamKey(color, division)]?.color_hex ?? '#94a3b8'
           return (
-            <span key={c} className="inline-flex items-center gap-1 text-xs text-slate-600">
+            <span key={teamKey(color, division)} className="inline-flex items-center gap-1 text-xs text-slate-600">
               <span
                 className="size-2.5 shrink-0 rounded-full ring-1 ring-black/10"
                 style={{ backgroundColor: hex }}
               />
-              {c}
+              {color}
             </span>
           )
         })}
@@ -70,7 +73,7 @@ export function DutiesTable({
                 <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">
                   {setupTime ?? '—'}
                 </td>
-                <TeamCell colors={setupTeams} teams={teams} />
+                <TeamCell items={setupTeams} teams={teams} />
               </tr>
             )}
             {packdownTeams.length > 0 && (
@@ -83,7 +86,7 @@ export function DutiesTable({
                 <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">
                   {packdownTime ?? '—'}
                 </td>
-                <TeamCell colors={packdownTeams} teams={teams} />
+                <TeamCell items={packdownTeams} teams={teams} />
               </tr>
             )}
             {lineRefByTime.map(([time, colors]) => (
@@ -94,7 +97,7 @@ export function DutiesTable({
                   </span>
                 </td>
                 <td className="px-3 py-2 tabular-nums text-slate-500 whitespace-nowrap">{time}</td>
-                <TeamCell colors={colors} teams={teams} />
+                <TeamCell items={colors} teams={teams} />
               </tr>
             ))}
           </tbody>

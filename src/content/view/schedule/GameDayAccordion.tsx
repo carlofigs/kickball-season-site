@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { ChevronDown, ChevronUp, Clock, MapPin } from 'lucide-react'
 import type { SeasonData } from '../../../types/schedule'
-import { FIELD_ORDER, type CalendarGroup, parseMatchTime, fmtDate, dutyTimes } from './_helpers'
+import { teamKey, FIELD_ORDER, type CalendarGroup, parseMatchTime, fmtDate, dutyTimes } from './_helpers'
 import { DutiesTable } from './DutiesTable'
 import { TimetableCell } from './TimetableCell'
 
@@ -16,26 +16,42 @@ type Props = {
 export function GameDayAccordion({ group, teams, scores, isOpen, onToggle }: Props) {
   const hasGames = group.games.length > 0
 
+  // Duty team lists carry {color, division} so DutiesTable can resolve hex via compound key.
+  // Using teamKey as the dedup key ensures Open and Guardians same-color teams are distinct.
   const setupTeams = useMemo(() => {
-    const seen = new Set<string>()
-    for (const g of group.games) for (const c of g.field_setup_teams ?? []) seen.add(c)
-    return [...seen]
+    const seen = new Map<string, { color: string; division: string | null }>()
+    for (const g of group.games)
+      for (const c of g.field_setup_teams ?? []) {
+        const ck = teamKey(c, g.division)
+        if (!seen.has(ck)) seen.set(ck, { color: c, division: g.division ?? null })
+      }
+    return [...seen.values()]
   }, [group.games])
 
   const packdownTeams = useMemo(() => {
-    const seen = new Set<string>()
-    for (const g of group.games) for (const c of g.field_packdown_teams ?? []) seen.add(c)
-    return [...seen]
+    const seen = new Map<string, { color: string; division: string | null }>()
+    for (const g of group.games)
+      for (const c of g.field_packdown_teams ?? []) {
+        const ck = teamKey(c, g.division)
+        if (!seen.has(ck)) seen.set(ck, { color: c, division: g.division ?? null })
+      }
+    return [...seen.values()]
   }, [group.games])
 
-  const lineRefByTime = useMemo((): Array<[string, string[]]> => {
-    const map = new Map<string, string[]>()
+  const lineRefByTime = useMemo((): Array<[string, Array<{ color: string; division: string | null }>]> => {
+    const map = new Map<string, Map<string, { color: string; division: string | null }>>()
     for (const g of group.games) {
       if (!g.line_ref_teams?.length || !g.match_time) continue
-      const prev = map.get(g.match_time) ?? []
-      map.set(g.match_time, [...new Set([...prev, ...g.line_ref_teams])])
+      if (!map.has(g.match_time)) map.set(g.match_time, new Map())
+      const slot = map.get(g.match_time)!
+      for (const c of g.line_ref_teams) {
+        const ck = teamKey(c, g.division)
+        if (!slot.has(ck)) slot.set(ck, { color: c, division: g.division ?? null })
+      }
     }
-    return [...map.entries()].sort(([a], [b]) => parseMatchTime(a) - parseMatchTime(b))
+    return [...map.entries()]
+      .sort(([a], [b]) => parseMatchTime(a) - parseMatchTime(b))
+      .map(([time, slot]) => [time, [...slot.values()]])
   }, [group.games])
 
   const { setup: setupTime, packdown: packdownTime } = useMemo(

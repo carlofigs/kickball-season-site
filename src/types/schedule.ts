@@ -33,7 +33,7 @@ export interface DbSeasonTeam {
   emoji: string | null
   color_hex: string | null       // primary brand colour e.g. "#1a1a2e"
   pill_label_color: string | null
-  division: string | null        // "Div1" | "Div2" | "Guardian"
+  division: string | null        // "Div1" | "Div2" | "Guardians" (season_teams values)
 }
 
 /** public.season_events row — calendar items for the season timeline. */
@@ -59,6 +59,7 @@ export interface DbGame {
   team_b: string | null          // team_color key
   status: 'scheduled' | 'in_progress' | 'complete' | 'cancelled'
   game_day_number: number | null // groups fixtures by game day (1–7)
+  division: string | null        // "Open" | "Guardians" | null for tournament games
   event_id: string | null        // FK → season_events.event_uuid
   match_time: string | null      // display time — "3:00 PM" | "4:00 PM"
   scheduled_at: string | null    // ISO timestamptz

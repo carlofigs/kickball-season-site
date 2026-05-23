@@ -1,4 +1,5 @@
 import type { DbGame, SeasonData } from '../../../types/schedule'
+import { teamKey } from './_helpers'
 
 type Props = {
   game: DbGame
@@ -11,8 +12,8 @@ export function TimetableCell({ game, teams, scores }: Props) {
   const hasScore = score && score.score_a != null && score.score_b != null
   const aWon = hasScore && score.score_a! > score.score_b!
   const bWon = hasScore && score.score_b! > score.score_a!
-  const tA = game.team_a ? teams[game.team_a] : null
-  const tB = game.team_b ? teams[game.team_b] : null
+  const tA = game.team_a ? teams[teamKey(game.team_a, game.division)] : null
+  const tB = game.team_b ? teams[teamKey(game.team_b, game.division)] : null
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs h-full">
